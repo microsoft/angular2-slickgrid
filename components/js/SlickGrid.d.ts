@@ -59,7 +59,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     onResize(): void;
     getSelectedRanges(): ISlickRange[];
     setActive(): void;
-    resetActive(): void;
+    selection: ISlickRange[] | boolean;
     private getColumnEditor;
     private getFormatter;
     private initGrid();

@@ -332,8 +332,18 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this._grid.setActiveCell(0, 1);
         this._gridSyncService.selectionModel.setSelectedRanges([new Slick.Range(0, 0, 0, 0)]);
     }
-    resetActive() {
-        this._gridSyncService.selectionModel.clearSelection();
+    set selection(range) {
+        if (typeof range === 'boolean') {
+            if (range) {
+                this._gridSyncService.selectionModel.setSelectedRanges([new Slick.Range(0, 0, this._grid.getDataLength() - 1, this._grid.getColumns().length - 1)]);
+            }
+            else {
+                this._gridSyncService.selectionModel.clearSelection();
+            }
+        }
+        else {
+            this._gridSyncService.selectionModel.setSelectedRanges(range);
+        }
     }
     initGrid() {
         // https://github.com/mleibman/SlickGrid/wiki/Grid-Options
