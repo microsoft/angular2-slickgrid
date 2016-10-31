@@ -17,5 +17,5 @@ gulp.task('compile', () => {
 });
 
 gulp.task('clean', () => {
-    return del(['**/*.js', '!node_modules/**/*', '!gulpfile.js'])
+    return del(['**/*.js', '**/*.d.ts', '!node_modules/**/*', '!gulpfile.js', '!typings/**/*'])
 });
