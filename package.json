@@ -2,7 +2,7 @@
   "name": "angular2_slickgrid",
   "version": "1.0.0",
   "description": "",
-  "main": "gulpfile.js",
+  "main": "angular_slickgrid.js",
   "scripts": {
     "compile": "echo \"Error: no test specified\" && exit 1"
   },
