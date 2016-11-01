@@ -208,6 +208,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             this._grid.focus();
         }
     }
+    /* andresse: commented out 11/1/2016 due to minification issues
+    private _finishGridEditingFn: (e: any, args: any) => void;
+    */
     static getDataWithSchema(data, columns) {
         let dataWithSchema = {};
         for (let i = 0; i < columns.length; i++) {
@@ -272,6 +275,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         if (wasEditing && hasGridStructureChanges) {
             this._grid.editActiveCell();
         }
+        /* andresse: commented out 11/1/2016 due to minification issues
         if (changes['editableColumnIds']) {
             let newValue = changes['editableColumnIds'].currentValue;
             if (!_.isEqual(newValue, changes['editableColumnIds'].previousValue)) {
@@ -284,6 +288,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                 }
             }
         }
+        */
     }
     invalidateRange(start, end) {
         let refreshedRows = _.range(start, end);
@@ -484,20 +489,6 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                 editor.setValue(oldValue);
             }
         }
-    }
-    get finishGridEditingFn() {
-        if (this._finishGridEditingFn === undefined) {
-            this._finishGridEditingFn = ((e, args) => {
-                if (e.ctrlKey === true
-                    && e.keyCode === 13
-                    && this.editableColumnIds
-                    && this.editableColumnIds.find(id => id === args.columnDef.id)) {
-                    // pressed [Ctrl + Enter] in the editing area
-                    this.editingFinished.next(undefined);
-                }
-            }).bind(this);
-        }
-        return this._finishGridEditingFn;
     }
 };
 __decorate([

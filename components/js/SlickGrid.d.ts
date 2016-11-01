@@ -46,7 +46,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private _gridSyncSubscription;
     private _topRow;
     private _leftPx;
-    private _finishGridEditingFn;
     private static getDataWithSchema(data, columns);
     constructor(_el: any, _gridSyncService: any, _localizationService: any);
     ngOnChanges(changes: {
@@ -71,5 +70,4 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private getImagePathForDataType(type);
     private setCallbackOnDataRowsChanged();
     private renderGridDataRowsRange(startIndex, count);
-    private finishGridEditingFn;
 }
