@@ -153,7 +153,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     private _gridSyncSubscription: Subscription;
     private _topRow: number = 0;
     private _leftPx: number = 0;
+    /* andresse: commented out 11/1/2016 due to minification issues
     private _finishGridEditingFn: (e: any, args: any) => void;
+    */
 
     private static getDataWithSchema(data: IGridDataRow, columns: ISlickGridColumn[]): any {
         let dataWithSchema = {};
@@ -244,6 +246,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             this._grid.editActiveCell();
         }
 
+        /* andresse: commented out 11/1/2016 due to minification issues
         if (changes['editableColumnIds']) {
             let newValue = changes['editableColumnIds'].currentValue;
             if (!_.isEqual(newValue, changes['editableColumnIds'].previousValue)) {
@@ -256,6 +259,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                 }
             }
         }
+        */
     }
 
     private invalidateRange(start: number, end: number): void {
@@ -559,6 +563,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    /* andresse: commented out 11/1/2016 due to minification issues
     private get finishGridEditingFn(): (e: any, args: any) => void {
         if (this._finishGridEditingFn === undefined) {
             this._finishGridEditingFn = ((e: any, args: any) => {
@@ -574,6 +579,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
         return this._finishGridEditingFn;
     }
+    */
 }
 
 interface ISlickGridData {
