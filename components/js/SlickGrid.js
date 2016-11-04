@@ -434,9 +434,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         }
         this._gridColumns = this.columnDefinitions.map((c, i) => {
             let column = {
-                name: c.id,
+                name: c.name,
                 field: c.id,
-                id: c.id,
+                id: c.id ? c.id : c.name,
                 icon: this.getImagePathForDataType(c.type),
                 resizable: true
             };
