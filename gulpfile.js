@@ -2,6 +2,7 @@
 const gulp = require('gulp');
 const del = require('del');
 const ts = require('gulp-typescript');
+const qunit = require('node-qunit-phantomjs');
 const merge = require('merge2');
 
 const tsproj = ts.createProject('./tsconfig.json');
@@ -19,3 +20,5 @@ gulp.task('compile', () => {
 gulp.task('clean', () => {
     return del(['**/*.js', '**/*.d.ts', '!node_modules/**/*', '!gulpfile.js', '!typings/**/*', '!libs/**/*'])
 });
+
+gulp.task('build', gulp.series('clean', 'compile'));
