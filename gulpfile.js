@@ -2,7 +2,6 @@
 const gulp = require('gulp');
 const del = require('del');
 const ts = require('gulp-typescript');
-const qunit = require('node-qunit-phantomjs');
 const merge = require('merge2');
 
 const tsproj = ts.createProject('./tsconfig.json');
