@@ -336,7 +336,13 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         return this._gridSyncService.selectionModel.getSelectedRanges();
     }
     registerPlugin(plugin) {
-        this._grid.registerPlugin(plugin);
+        if (Slick[plugin] && typeof Slick[plugin] === 'function') {
+            this._grid.registerPlugin(new Slick[plugin]);
+        }
+        else {
+            console.error(`Tried to register plugin ${plugin}, but none was found to be attached to Slick Grid or it was not a function.
+                        Please extend the Slick with the plugin as a function before registering`);
+        }
     }
     setActive() {
         this._grid.setActiveCell(0, 1);
@@ -377,6 +383,15 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         };
         this._grid = new Slick.Grid(this._el.nativeElement.getElementsByClassName('grid')[0], this._gridData, this._gridColumns, options);
         if (this._gridSyncService) {
+            if (this.selectionModel) {
+                if (Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
+                    this._gridSyncService.underlyingSelectionModel(new Slick[this.selectionModel]());
+                }
+                else {
+                    console.error(`Tried to register selection model ${this.selectionModel}, but none was found to be attached to Slick Grid or it was not a function.
+                                Please extend the Slick with the selection model as a function before registering`);
+                }
+            }
             this._grid.setSelectionModel(this._gridSyncService.selectionModel);
             this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
             this._gridSyncSubscription = this._gridSyncService.updated
@@ -387,7 +402,13 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             });
         }
         for (let plugin of this.plugins) {
-            this.registerPlugin(plugin);
+            if (Slick[plugin] && typeof Slick[plugin] === 'function') {
+                this.registerPlugin(new Slick[plugin]());
+            }
+            else {
+                console.error(`Tried to register plugin ${plugin}, but none was found to be attached to Slick Grid or it was not a function.
+                            Please extend the Slick with the plugin as a function before registering`);
+            }
         }
         this.onResize();
     }
