@@ -24,6 +24,8 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     showDataTypeIcon: boolean;
     enableColumnReorder: boolean;
     enableAsyncPostRender: boolean;
+    selectionModel: string;
+    plugins: any[];
     loadFinished: EventEmitter<void>;
     cellChanged: EventEmitter<{
         column: string;
@@ -57,6 +59,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     ngOnDestroy(): void;
     onResize(): void;
     getSelectedRanges(): ISlickRange[];
+    registerPlugin(plugin: any): void;
     setActive(): void;
     selection: ISlickRange[] | boolean;
     private getColumnEditor;

@@ -19,7 +19,6 @@ let GridSyncService = class GridSyncService {
         this._columnWidthPXs = [];
         this._updated = new Rx_1.Subject();
         this._typeDropdownOffset = new Rx_1.Subject();
-        this._selectionModel = new SelectionModel_1.SelectionModel(new Slick.DragRowSelectionModel({ selectActiveRow: false }), new Slick.EventHandler(), new Slick.Event(), (fromRow, fromCell, toRow, toCell) => new Slick.Range(fromRow, fromCell, toRow, toCell));
         this._initialColumnWidthPXsOnResize = [];
         this._isGridReadOnly = false;
     }
@@ -50,6 +49,9 @@ let GridSyncService = class GridSyncService {
                 this.setColumnWidthPX(index - 1, this._columnWidthPXs[index - 1] - leftShrink);
             }
         }
+    }
+    set underlyingSelectionModel(selectionModel) {
+        this._selectionModel = new SelectionModel_1.SelectionModel(selectionModel, new Slick.EventHandler(), new Slick.Event(), (fromRow, fromCell, toRow, toCell) => new Slick.Range(fromRow, fromCell, toRow, toCell));
     }
     get updated() {
         return this._updated;

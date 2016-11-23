@@ -1,0 +1,19 @@
+* {
+  --color-content: #101010;
+  --color-content-disabled: #a9a9a9;
+  --color-error: #E81123;
+  --color-success: #7CD300;
+  --color-bg-header: hsla(0,0%,50%,.2);
+  --color-bg-content-light: #ffffff;
+  --color-bg-content-header: #F5F5F5; /* used for color of grid headers */
+  --color-cell-border-active: grey;
+  --color-cell-bg-grid-selected: rgb(173, 214, 255);
+}
+
+slick-grid .grid .slick-cell.active {
+  border: dotted 1px var(--color-cell-border-active);
+}
+
+slick-grid .grid .slick-cell.selected {
+  background-color: var(--color-cell-bg-grid-selected);
+}

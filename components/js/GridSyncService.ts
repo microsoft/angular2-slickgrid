@@ -3,7 +3,6 @@ import {Subject, Observable} from 'rxjs/Rx';
 import {SelectionModel, ISlickRange} from './SelectionModel';
 
 declare let Slick;
-declare let DragRowSelectionModel;
 
 @Injectable()
 export class GridSyncService {
@@ -15,11 +14,7 @@ export class GridSyncService {
     private _rowNumberColumnWidthPX: number;
     private _updated = new Subject<string>();
     private _typeDropdownOffset = new Subject<[number, number]>();
-    private _selectionModel = new SelectionModel(
-        new Slick.DragRowSelectionModel({selectActiveRow: false}),
-        new Slick.EventHandler(),
-        new Slick.Event(),
-        (fromRow: number, fromCell: number, toRow: number, toCell: number): ISlickRange => new Slick.Range(fromRow, fromCell, toRow, toCell));
+    private _selectionModel: SelectionModel;
     private _initialColumnWidthPXsOnResize: number[] = [];
     private _isGridReadOnly: boolean = false;
 
@@ -54,6 +49,15 @@ export class GridSyncService {
                 this.setColumnWidthPX(index - 1, this._columnWidthPXs[index - 1] - leftShrink);
             }
         }
+    }
+
+    set underlyingSelectionModel(selectionModel: any) {
+        this._selectionModel = new SelectionModel(
+            selectionModel,
+            new Slick.EventHandler(),
+            new Slick.Event(),
+            (fromRow: number, fromCell: number, toRow: number, toCell: number): ISlickRange => new Slick.Range(fromRow, fromCell, toRow, toCell)
+        );
     }
 
     get updated(): Observable<string> {

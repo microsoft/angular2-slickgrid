@@ -118,10 +118,12 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.blurredColumns = [];
         this.contextColumns = [];
         this.columnsLoading = [];
-        this.showHeader = false;
+        this.showHeader = true;
         this.showDataTypeIcon = true;
         this.enableColumnReorder = false;
-        this.enableAsyncPostRender = true;
+        this.enableAsyncPostRender = false;
+        this.selectionModel = '';
+        this.plugins = [];
         this.loadFinished = new core_1.EventEmitter();
         this.cellChanged = new core_1.EventEmitter();
         this.editingFinished = new core_1.EventEmitter();
@@ -333,6 +335,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     getSelectedRanges() {
         return this._gridSyncService.selectionModel.getSelectedRanges();
     }
+    registerPlugin(plugin) {
+        this._grid.registerPlugin(plugin);
+    }
     setActive() {
         this._grid.setActiveCell(0, 1);
         this._gridSyncService.selectionModel.setSelectedRanges([new Slick.Range(0, 0, 0, 0)]);
@@ -381,7 +386,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                 this.updateColumnWidths();
             });
         }
-        this._grid.registerPlugin(new Slick.AutoColumnSize());
+        for (let plugin of this.plugins) {
+            this.registerPlugin(plugin);
+        }
         this.onResize();
     }
     subscribeToScroll() {
@@ -544,6 +551,14 @@ __decorate([
     __metadata('design:type', Boolean)
 ], SlickGrid.prototype, "enableAsyncPostRender", void 0);
 __decorate([
+    core_1.Input(), 
+    __metadata('design:type', String)
+], SlickGrid.prototype, "selectionModel", void 0);
+__decorate([
+    core_1.Input(), 
+    __metadata('design:type', Array)
+], SlickGrid.prototype, "plugins", void 0);
+__decorate([
     core_1.Output(), 
     __metadata('design:type', core_1.EventEmitter)
 ], SlickGrid.prototype, "loadFinished", void 0);
@@ -576,7 +591,7 @@ __decorate([
 SlickGrid = SlickGrid_1 = __decorate([
     core_1.Component({
         selector: 'slick-grid',
-        template: '<div #grid class="grid boxRow content" (window:resize)="onResize()"></div>',
+        template: '<div #grid class="grid" (window:resize)="onResize()"></div>',
         providers: [LocalizationService_1.LocalizationService, GridSyncService_1.GridSyncService],
         encapsulation: core_1.ViewEncapsulation.None
     }),

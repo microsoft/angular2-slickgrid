@@ -15,6 +15,7 @@ export declare class GridSyncService {
     resizeColumn(index: number, deltaWidthPX: number): void;
     openTypeDropdown(columnIndex: number): void;
     private setColumnWidthPX(index, widthPX);
+    underlyingSelectionModel: any;
     updated: Observable<string>;
     typeDropdownOffset: Observable<[number, number]>;
     scrollLeftPX: number;

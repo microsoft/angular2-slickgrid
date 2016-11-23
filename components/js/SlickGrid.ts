@@ -111,7 +111,7 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
 
 @Component({
     selector: 'slick-grid',
-    template: '<div #grid class="grid boxRow content" (window:resize)="onResize()"></div>',
+    template: '<div #grid class="grid" (window:resize)="onResize()"></div>',
     providers: [LocalizationService, GridSyncService],
     encapsulation: ViewEncapsulation.None
 })
@@ -125,10 +125,12 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() contextColumns: string[] = [];
     @Input() columnsLoading: string[] = [];
     @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
-    @Input() showHeader: boolean = false;
+    @Input() showHeader: boolean = true;
     @Input() showDataTypeIcon: boolean = true;
     @Input() enableColumnReorder: boolean = false;
-    @Input() enableAsyncPostRender: boolean = true;
+    @Input() enableAsyncPostRender: boolean = false;
+    @Input() selectionModel: string = '';
+    @Input() plugins: any[] = [];
 
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
     @Output() cellChanged: EventEmitter<{column: string, row: number, newValue: any}> = new EventEmitter<{column: string, row: number, newValue: any}>();
@@ -313,6 +315,10 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         return this._gridSyncService.selectionModel.getSelectedRanges();
     }
 
+    public registerPlugin(plugin: any): void {
+        this._grid.registerPlugin(plugin);
+    }
+
     public setActive(): void {
         this._grid.setActiveCell(0, 1);
         this._gridSyncService.selectionModel.setSelectedRanges([new Slick.Range(0, 0, 0, 0)]);
@@ -439,7 +445,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                     this.updateColumnWidths();
                 });
         }
-        this._grid.registerPlugin( new Slick.AutoColumnSize());
+        for (let plugin of this.plugins) {
+            this.registerPlugin(plugin);
+        }
         this.onResize();
     }
 
