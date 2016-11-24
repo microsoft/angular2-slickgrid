@@ -312,7 +312,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     }
 
     public getSelectedRanges(): ISlickRange[] {
-        return this._gridSyncService.selectionModel.getSelectedRanges();
+        if (this._gridSyncService && this._gridSyncService.selectionModel) {
+            return this._gridSyncService.selectionModel.getSelectedRanges();
+        }
     }
 
     public registerPlugin(plugin: string): void {
@@ -326,7 +328,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     public setActive(): void {
         this._grid.setActiveCell(0, 1);
-        this._gridSyncService.selectionModel.setSelectedRanges([new Slick.Range(0, 0, 0, 0)]);
+        if (this._gridSyncService && this._gridSyncService.selectionModel) {
+            this._gridSyncService.selectionModel.setSelectedRanges([new Slick.Range(0, 0, 0, 0)]);
+        }
     }
 
     public set selection(range: ISlickRange[] | boolean) {
@@ -444,12 +448,12 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             if (this.selectionModel) {
                 if (Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
                     this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
+                    this._grid.setSelectionModel(this._gridSyncService.selectionModel);
                 } else {
                     console.error(`Tried to register selection model ${this.selectionModel}, but none was found to be attached to Slick Grid or it was not a function.
                                 Please extend the Slick with the selection model as a function before registering`);
                 }
             }
-            this._grid.setSelectionModel(this._gridSyncService.selectionModel);
             this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
             this._gridSyncSubscription = this._gridSyncService.updated
                 .filter(p => p === 'columnWidthPXs')
