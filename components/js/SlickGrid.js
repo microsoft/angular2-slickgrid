@@ -612,7 +612,7 @@ __decorate([
 SlickGrid = SlickGrid_1 = __decorate([
     core_1.Component({
         selector: 'slick-grid',
-        template: '<div #grid class="grid" (window:resize)="onResize()"></div>',
+        template: '<div class="grid" (window:resize)="onResize()"></div>',
         providers: [LocalizationService_1.LocalizationService, GridSyncService_1.GridSyncService],
         encapsulation: core_1.ViewEncapsulation.None
     }),

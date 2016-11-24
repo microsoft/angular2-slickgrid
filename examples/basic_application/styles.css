@@ -10,10 +10,24 @@
   --color-cell-bg-grid-selected: rgb(173, 214, 255);
 }
 
-slick-grid .grid .slick-cell.active {
+a {
+  color: #0078D7;
+}
+
+a:hover {
+  color: #0b93ff;
+}
+
+/* grid styling */
+
+slick-grid.active .grid .slick-cell.active {
   border: dotted 1px var(--color-cell-border-active);
 }
 
-slick-grid .grid .slick-cell.selected {
+slick-grid.active .grid .slick-cell.selected {
   background-color: var(--color-cell-bg-grid-selected);
+}
+
+.boxRow.content.horzBox.slickgrid {
+  border: solid 1px #EEEEF2;
 }

@@ -111,7 +111,7 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
 
 @Component({
     selector: 'slick-grid',
-    template: '<div #grid class="grid" (window:resize)="onResize()"></div>',
+    template: '<div class="grid" (window:resize)="onResize()"></div>',
     providers: [LocalizationService, GridSyncService],
     encapsulation: ViewEncapsulation.None
 })
