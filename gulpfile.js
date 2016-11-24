@@ -9,19 +9,19 @@ const tsproj = ts.createProject('./tsconfig.json');
 const exmapProj = ts.createProject('./tsconfig.json', { declaration: false });
 
 gulp.task('compile', () => {
-    let tsResult = gulp.src(['**/*.ts', '!node_modules/**/*', '!examples/**/*'])
+    let tsResult = gulp.src(['components/**/*.ts', 'typings/**/*.ts'])
                 .pipe(ts(tsproj))
 
     return merge([
-        tsResult.dts.pipe(gulp.dest('./')),
-        tsResult.js.pipe(gulp.dest('./'))
+        tsResult.dts.pipe(gulp.dest('./components/')),
+        tsResult.js.pipe(gulp.dest('./components/'))
     ]);
 });
 
 gulp.task('compile:examples', (done) => {
     let promises = [];
     promises.push(new Promise((resolve) => {
-        gulp.src(['examples/**/*.ts'])
+        gulp.src(['examples/**/*.ts', 'typings/**/*.ts'])
             .pipe(ts(exmapProj))
             .pipe(gulp.dest('dist'))
             .on('end', () => {
