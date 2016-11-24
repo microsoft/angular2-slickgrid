@@ -1,3 +1,6 @@
+:root {
+    --background-color: white;
+}
 * {
   --color-content: #101010;
   --color-content-disabled: #a9a9a9;
@@ -20,11 +23,11 @@ a:hover {
 
 /* grid styling */
 
-slick-grid.active .grid .slick-cell.active {
+slick-grid .grid .slick-cell.active {
   border: dotted 1px var(--color-cell-border-active);
 }
 
-slick-grid.active .grid .slick-cell.selected {
+slick-grid .grid .slick-cell.selected {
   background-color: var(--color-cell-bg-grid-selected);
 }
 
