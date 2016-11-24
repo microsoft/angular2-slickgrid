@@ -130,7 +130,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() enableColumnReorder: boolean = false;
     @Input() enableAsyncPostRender: boolean = false;
     @Input() selectionModel: string = '';
-    @Input() plugins: any[] = [];
+    @Input() plugins: string[] = [];
 
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
     @Output() cellChanged: EventEmitter<{column: string, row: number, newValue: any}> = new EventEmitter<{column: string, row: number, newValue: any}>();

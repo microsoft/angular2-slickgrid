@@ -25,7 +25,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     enableColumnReorder: boolean;
     enableAsyncPostRender: boolean;
     selectionModel: string;
-    plugins: any[];
+    plugins: string[];
     loadFinished: EventEmitter<void>;
     cellChanged: EventEmitter<{
         column: string;
