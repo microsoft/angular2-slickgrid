@@ -443,7 +443,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         if (this._gridSyncService) {
             if (this.selectionModel) {
                 if (Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
-                    this._gridSyncService.underlyingSelectionModel(new Slick[this.selectionModel]());
+                    this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
                 } else {
                     console.error(`Tried to register selection model ${this.selectionModel}, but none was found to be attached to Slick Grid or it was not a function.
                                 Please extend the Slick with the selection model as a function before registering`);
