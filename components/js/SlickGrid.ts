@@ -1,19 +1,14 @@
 /*
-*   SlickGrid Angular2 implementation obtained from Pendelton team
-*   at Microsoft.
+*   SlickGrid Angular2 implementation from Microsoft
 *
 */
 
-import {Component, Input, Output, Inject, forwardRef, OnChanges, OnInit, OnDestroy, ElementRef, SimpleChange, EventEmitter,
+import { Component, Input, Output, Inject, forwardRef, OnChanges, OnInit, OnDestroy, ElementRef, SimpleChange, EventEmitter,
     ViewEncapsulation, Optional, HostListener, AfterViewInit } from '@angular/core';
-import {Observable, Subscription} from 'rxjs/Rx';
-import {IObservableCollection, CollectionChange} from './BaseLibrary';
-import {IGridDataRow} from './SharedControlInterfaces';
-import {IColumnDefinition} from './ModelInterfaces';
-import {LocalizationService} from './LocalizationService';
-import {GridSyncService} from './GridSyncService';
-import {ISlickRange} from './SelectionModel';
-import {FieldType} from './EngineAPI';
+import { Observable, Subscription } from 'rxjs/Rx';
+import { IObservableCollection, CollectionChange, IGridDataRow, IColumnDefinition, FieldType } from './interfaces';
+import { GridSyncService } from './gridsync.service';
+import { ISlickRange } from './selectionmodel';
 
 declare let Slick;
 
@@ -112,7 +107,7 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
 @Component({
     selector: 'slick-grid',
     template: '<div class="grid" (window:resize)="onResize()"></div>',
-    providers: [LocalizationService, GridSyncService],
+    providers: [GridSyncService],
     encapsulation: ViewEncapsulation.None
 })
 export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
@@ -169,8 +164,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     }
 
     constructor(@Inject(forwardRef(() => ElementRef)) private _el,
-                @Optional() @Inject(forwardRef(() => GridSyncService)) private _gridSyncService,
-                @Inject(forwardRef(() => LocalizationService)) private _localizationService) {
+                @Optional() @Inject(forwardRef(() => GridSyncService)) private _gridSyncService) {
         this._gridData = {
             getLength: (): number => {
                 return this.dataRows && this._gridColumns ? this.dataRows.getLength() : 0;
@@ -354,7 +348,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         let isColumnLoading = this.columnsLoading && this.columnsLoading.indexOf(columnId) !== -1;
         if (isEditable) {
             return isColumnLoading
-                ? getDisabledEditorClass(this._localizationService['strings']['loadingCell'])
+                ? getDisabledEditorClass('')
                 : getOverridableTextEditorClass(this);
         }
 
@@ -392,7 +386,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
                 if (isColumnLoading === true && !isOverridden) {
                     cellClasses += ' loading-cell';
-                    valueToDisplay = this._localizationService['strings']['loadingCell'];
+                    valueToDisplay = '';
                 }
 
                 if (isOverridden) {
@@ -450,8 +444,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                     this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
                     this._grid.setSelectionModel(this._gridSyncService.selectionModel);
                 } else {
-                    console.error(`Tried to register selection model ${this.selectionModel}, but none was found to be attached to Slick Grid or it was not a function.
-                                Please extend the Slick with the selection model as a function before registering`);
+                    console.error(`Tried to register selection model ${this.selectionModel}, 
+                                   but none was found to be attached to Slick Grid or it was not a function.
+                                   Please extend the Slick with the selection model as a function before registering`);
                 }
             }
             this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;

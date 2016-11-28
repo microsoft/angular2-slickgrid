@@ -1,4 +1,4 @@
-import {ISelectionRange} from './BackingModel';
+import { ISelectionRange } from './interfaces';
 
 export class SelectionModel implements ISlickSelectionModel {
 

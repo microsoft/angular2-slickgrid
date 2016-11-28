@@ -1,6 +1,5 @@
 /*
-*   SlickGrid Angular2 implementation obtained from Pendelton team
-*   at Microsoft.
+*   SlickGrid Angular2 implementation from Microsoft
 *
 */
 "use strict";
@@ -18,9 +17,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 const core_1 = require('@angular/core');
 const Rx_1 = require('rxjs/Rx');
-const LocalizationService_1 = require('./LocalizationService');
-const GridSyncService_1 = require('./GridSyncService');
-const EngineAPI_1 = require('./EngineAPI');
+const interfaces_1 = require('./interfaces');
+const gridsync_service_1 = require('./gridsync.service');
 function getDisabledEditorClass(loadingString) {
     class DisabledEditor {
         constructor(args) {
@@ -109,10 +107,9 @@ function getOverridableTextEditorClass(grid) {
 }
 let SlickGrid_1;
 let SlickGrid = SlickGrid_1 = class SlickGrid {
-    constructor(_el, _gridSyncService, _localizationService) {
+    constructor(_el, _gridSyncService) {
         this._el = _el;
         this._gridSyncService = _gridSyncService;
-        this._localizationService = _localizationService;
         this.editableColumnIds = [];
         this.highlightedCells = [];
         this.blurredColumns = [];
@@ -139,7 +136,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             let isColumnLoading = this.columnsLoading && this.columnsLoading.indexOf(columnId) !== -1;
             if (isEditable) {
                 return isColumnLoading
-                    ? getDisabledEditorClass(this._localizationService['strings']['loadingCell'])
+                    ? getDisabledEditorClass('')
                     : getOverridableTextEditorClass(this);
             }
             return undefined;
@@ -159,7 +156,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                     let overrideValue = this.overrideCellFn && this.overrideCellFn(row, columnId, value, dataContext);
                     let valueToDisplay = (value + '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     let cellClasses = 'grid-cell-value-container';
-                    if (columnType !== EngineAPI_1.FieldType.String) {
+                    if (columnType !== interfaces_1.FieldType.String) {
                         cellClasses += ' right-justified';
                     }
                     /* tslint:disable:no-null-keyword */
@@ -171,7 +168,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                     }
                     if (isColumnLoading === true && !isOverridden) {
                         cellClasses += ' loading-cell';
-                        valueToDisplay = this._localizationService['strings']['loadingCell'];
+                        valueToDisplay = '';
                     }
                     if (isOverridden) {
                         cellClasses += ' override-cell';
@@ -393,8 +390,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                     this._grid.setSelectionModel(this._gridSyncService.selectionModel);
                 }
                 else {
-                    console.error(`Tried to register selection model ${this.selectionModel}, but none was found to be attached to Slick Grid or it was not a function.
-                                Please extend the Slick with the selection model as a function before registering`);
+                    console.error(`Tried to register selection model ${this.selectionModel}, 
+                                   but none was found to be attached to Slick Grid or it was not a function.
+                                   Please extend the Slick with the selection model as a function before registering`);
                 }
             }
             this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
@@ -483,16 +481,16 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     getImagePathForDataType(type) {
         const resourcePath = './resources/';
         switch (type) {
-            case EngineAPI_1.FieldType.String:
+            case interfaces_1.FieldType.String:
                 return resourcePath + 'col-type-string.svg';
-            case EngineAPI_1.FieldType.Boolean:
+            case interfaces_1.FieldType.Boolean:
                 return resourcePath + 'col-type-boolean.svg';
-            case EngineAPI_1.FieldType.Integer:
-            case EngineAPI_1.FieldType.Decimal:
+            case interfaces_1.FieldType.Integer:
+            case interfaces_1.FieldType.Decimal:
                 return resourcePath + 'col-type-number.svg';
-            case EngineAPI_1.FieldType.Date:
+            case interfaces_1.FieldType.Date:
                 return resourcePath + 'col-type-timedate.svg';
-            case EngineAPI_1.FieldType.Unknown:
+            case interfaces_1.FieldType.Unknown:
             default:
                 return resourcePath + 'circle.svg';
         }
@@ -611,13 +609,12 @@ SlickGrid = SlickGrid_1 = __decorate([
     core_1.Component({
         selector: 'slick-grid',
         template: '<div class="grid" (window:resize)="onResize()"></div>',
-        providers: [LocalizationService_1.LocalizationService, GridSyncService_1.GridSyncService],
+        providers: [gridsync_service_1.GridSyncService],
         encapsulation: core_1.ViewEncapsulation.None
     }),
     __param(0, core_1.Inject(core_1.forwardRef(() => core_1.ElementRef))),
     __param(1, core_1.Optional()),
-    __param(1, core_1.Inject(core_1.forwardRef(() => GridSyncService_1.GridSyncService))),
-    __param(2, core_1.Inject(core_1.forwardRef(() => LocalizationService_1.LocalizationService))), 
-    __metadata('design:paramtypes', [Object, Object, Object])
+    __param(1, core_1.Inject(core_1.forwardRef(() => gridsync_service_1.GridSyncService))), 
+    __metadata('design:paramtypes', [Object, Object])
 ], SlickGrid);
 exports.SlickGrid = SlickGrid;

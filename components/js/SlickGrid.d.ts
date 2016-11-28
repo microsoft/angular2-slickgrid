@@ -1,13 +1,10 @@
 import { OnChanges, OnInit, OnDestroy, SimpleChange, EventEmitter, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { IObservableCollection } from './BaseLibrary';
-import { IGridDataRow } from './SharedControlInterfaces';
-import { IColumnDefinition } from './ModelInterfaces';
-import { ISlickRange } from './SelectionModel';
+import { IObservableCollection, IGridDataRow, IColumnDefinition } from './interfaces';
+import { ISlickRange } from './selectionmodel';
 export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     private _el;
     private _gridSyncService;
-    private _localizationService;
     columnDefinitions: IColumnDefinition[];
     dataRows: IObservableCollection<IGridDataRow>;
     resized: Observable<any>;
@@ -49,7 +46,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private _topRow;
     private _leftPx;
     private static getDataWithSchema(data, columns);
-    constructor(_el: any, _gridSyncService: any, _localizationService: any);
+    constructor(_el: any, _gridSyncService: any);
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
     }): void;

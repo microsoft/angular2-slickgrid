@@ -1,4 +1,4 @@
-import {IObservableCollection, CollectionChange} from './BaseLibrary';
+import { IObservableCollection, CollectionChange } from './interfaces';
 
 class LoadCancellationToken {
     isCancelled: boolean;

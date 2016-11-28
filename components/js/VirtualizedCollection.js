@@ -1,5 +1,5 @@
 "use strict";
-const BaseLibrary_1 = require('./BaseLibrary');
+const interfaces_1 = require('./interfaces');
 class LoadCancellationToken {
 }
 class DataWindow {
@@ -53,7 +53,7 @@ class VirtualizedCollection {
         this._length = length;
         let loadCompleteCallback = (start, end) => {
             if (this.collectionChangedCallback) {
-                this.collectionChangedCallback(BaseLibrary_1.CollectionChange.ItemsReplaced, start, end - start);
+                this.collectionChangedCallback(interfaces_1.CollectionChange.ItemsReplaced, start, end - start);
             }
         };
         this._bufferWindowBefore = new DataWindow(length, loadFn, _placeHolderGenerator, loadCompleteCallback);

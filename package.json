@@ -44,12 +44,14 @@
     "del": "^2.2.1",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-connect": "^5.0.0",
+    "gulp-tslint": "^6.0.2",
     "gulp-typescript": "^2.13.6",
     "merge2": "^1.0.2",
     "moment": "^2.15.1",
     "reflect-metadata": "^0.1.8",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "0.19.40",
+    "tslint": "^3.14.0",
     "underscore": "^1.8.3",
     "zone.js": "^0.6.26"
   }

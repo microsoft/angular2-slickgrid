@@ -36,3 +36,12 @@ From the root of the repo, install all of the build dependencies:
 ## Build project
 Type `gulp build` from the command line or run build inside VSCode
 
+## Examples 
+Example applications using this component can be found in the examples folder. To run the examples,
+run `gulp compile:examples` then run `gulp serve`. This will launch a static server at the root of the project.
+Navigate a browser to `http://localhost:{port}/dist/{exampleName}` e.g `http://localhost:8080/dist/basic_application`.
+
+
+## Contributing
+Because this project is meant to be used as an npm module, compiled files are checked into the repo. Before commiting run `gulp publish` (compiles
+everything except the examples). This should be removed once/if this is added to the npm registry.

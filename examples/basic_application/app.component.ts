@@ -15,10 +15,10 @@ const numberOfRows = 200;
 export class AppComponent implements OnInit {
     private dataRows: IObservableCollection<IGridDataRow>;
     private columnDefinitions: IColumnDefinition[];
+    // tslint:disable-next-line:no-unused-variable
     private selectionModel = 'CellSelectionModel';
 
     ngOnInit(): void {
-        const self = this;
         // generate columns
         let columns: IColumnDefinition[] = [];
         for (let i = 0; i < numberOfColumns; i++) {
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
         let loadDataFunction = (offset: number, count: number): Promise<IGridDataRow[]> => {
             return new Promise<IGridDataRow[]>((resolve) => {
                 let data: IGridDataRow[] = [];
-                for (let i = offset; i < offset+count; i++) {
+                for (let i = offset; i < offset + count; i++) {
                     let row: IGridDataRow = {
                         values: []
                     };
