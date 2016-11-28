@@ -7,14 +7,15 @@ const numberOfRows = 200;
 
 @Component({
     selector: 'my-app',
-    template: `<slick-grid style="height: 100%; width: 100%"
-                           [columnDefinitions]="columnDefinitions"
-                           [dataRows]="dataRows">
+    template: `<slick-grid [columnDefinitions]="columnDefinitions"
+                           [dataRows]="dataRows"
+                           (selectionModel)="selectionModel">
                </slick-grid>`
 })
 export class AppComponent implements OnInit {
     private dataRows: IObservableCollection<IGridDataRow>;
     private columnDefinitions: IColumnDefinition[];
+    private selectionModel = 'CellSelectionModel';
 
     ngOnInit(): void {
         const self = this;

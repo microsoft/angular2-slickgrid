@@ -8,7 +8,7 @@
         }
     });
 
-    function DragRowSelectionModel(options) {
+    function DragRowSelectionModel() {
         const end_key = 35, home_key = 36, left_arrow = 37, up_arrow = 38, right_arrow = 39, down_arrow = 40,
             a_key = 65, c_key = 67, keyColResizeIncr = 5;
 
@@ -17,15 +17,10 @@
         var _dragRow;
         var _ranges = [];
         var _self = this;
-        var _options;
-        var _defaults = {
-            selectActiveRow: true
-        };
         var _dragging = false;
         var _lastSelectedCell = 0;
 
         function init(grid) {
-            _options = $.extend(true, {}, _defaults, options);
             _grid = grid;
             _grid.onActiveCellChanged.subscribe(handleActiveCellChange);
             _grid.onKeyDown.subscribe(handleKeyDown);
@@ -95,11 +90,7 @@
             return _ranges;
         }
 
-        function handleActiveCellChange(e, data) {
-            if (_options.selectActiveRow) {
-                setSelectedRanges([new Slick.Range(data.row, 0, data.row, _grid.getColumns().length - 1)]);
-            }
-        }
+        function handleActiveCellChange(e, data) { }
 
         function isNavigationKey(e) {
             // Nave keys (home, end, arrows) are all in sequential order so use a

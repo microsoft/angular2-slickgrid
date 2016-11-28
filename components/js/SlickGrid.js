@@ -333,14 +333,24 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         }
     }
     getSelectedRanges() {
-        return this._gridSyncService.selectionModel.getSelectedRanges();
+        if (this._gridSyncService && this._gridSyncService.selectionModel) {
+            return this._gridSyncService.selectionModel.getSelectedRanges();
+        }
     }
     registerPlugin(plugin) {
-        this._grid.registerPlugin(plugin);
+        if (Slick[plugin] && typeof Slick[plugin] === 'function') {
+            this._grid.registerPlugin(new Slick[plugin]);
+        }
+        else {
+            console.error(`Tried to register plugin ${plugin}, but none was found to be attached to Slick Grid or it was not a function.
+                        Please extend the Slick with the plugin as a function before registering`);
+        }
     }
     setActive() {
         this._grid.setActiveCell(0, 1);
-        this._gridSyncService.selectionModel.setSelectedRanges([new Slick.Range(0, 0, 0, 0)]);
+        if (this._gridSyncService && this._gridSyncService.selectionModel) {
+            this._gridSyncService.selectionModel.setSelectedRanges([new Slick.Range(0, 0, 0, 0)]);
+        }
     }
     set selection(range) {
         if (typeof range === 'boolean') {
@@ -377,7 +387,16 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         };
         this._grid = new Slick.Grid(this._el.nativeElement.getElementsByClassName('grid')[0], this._gridData, this._gridColumns, options);
         if (this._gridSyncService) {
-            this._grid.setSelectionModel(this._gridSyncService.selectionModel);
+            if (this.selectionModel) {
+                if (Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
+                    this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
+                    this._grid.setSelectionModel(this._gridSyncService.selectionModel);
+                }
+                else {
+                    console.error(`Tried to register selection model ${this.selectionModel}, but none was found to be attached to Slick Grid or it was not a function.
+                                Please extend the Slick with the selection model as a function before registering`);
+                }
+            }
             this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
             this._gridSyncSubscription = this._gridSyncService.updated
                 .filter(p => p === 'columnWidthPXs')
@@ -591,7 +610,7 @@ __decorate([
 SlickGrid = SlickGrid_1 = __decorate([
     core_1.Component({
         selector: 'slick-grid',
-        template: '<div #grid class="grid" (window:resize)="onResize()"></div>',
+        template: '<div class="grid" (window:resize)="onResize()"></div>',
         providers: [LocalizationService_1.LocalizationService, GridSyncService_1.GridSyncService],
         encapsulation: core_1.ViewEncapsulation.None
     }),
