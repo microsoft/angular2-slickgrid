@@ -10,7 +10,7 @@ const tsproj = ts.createProject('./tsconfig.json');
 const exmapProj = ts.createProject('./tsconfig.json', { declaration: false });
 
 gulp.task('compile:src', () => {
-    let tsResult = gulp.src(['components/**/*.ts', './index.ts', 'typings/**/*.ts'])
+    let tsResult = gulp.src(['components/**/*.ts', 'typings/**/*.ts'])
                 .pipe(ts(tsproj));
 
     return merge([
