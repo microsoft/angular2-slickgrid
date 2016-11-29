@@ -38,7 +38,7 @@ Type `gulp build` from the command line or run build inside VSCode
 
 ## Examples 
 Example applications using this component can be found in the examples folder. To run the examples,
-run `gulp compile:examples` then run `gulp serve`. This will launch a static server at the root of the project.
+run `gulp compile:examples` (running `gulp build` will also compile the examples) then run `gulp serve`. This will launch a static server at the root of the project.
 Navigate a browser to `http://localhost:{port}/dist/{exampleName}` e.g `http://localhost:8080/dist/basic_application`.
 
 
