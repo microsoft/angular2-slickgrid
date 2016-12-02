@@ -116,7 +116,6 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.contextColumns = [];
         this.columnsLoading = [];
         this.showHeader = true;
-        this.showDataTypeIcon = true;
         this.enableColumnReorder = false;
         this.enableAsyncPostRender = false;
         this.selectionModel = '';
@@ -233,9 +232,11 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                 this._grid.setColumns(this._gridColumns);
             }
             if (this._gridSyncService) {
-                let gridColumnWidths = this._grid.getColumnWidths();
-                this._gridSyncService.rowNumberColumnWidthPX = gridColumnWidths[0];
-                this._gridSyncService.columnWidthPXs = gridColumnWidths.slice(1);
+                if (this._grid.getColumnWidths) {
+                    let gridColumnWidths = this._grid.getColumnWidths();
+                    this._gridSyncService.rowNumberColumnWidthPX = gridColumnWidths[0];
+                    this._gridSyncService.columnWidthPXs = gridColumnWidths.slice(1);
+                }
             }
             hasGridStructureChanges = true;
             if (!columnDefinitionChanges.currentValue || columnDefinitionChanges.currentValue.length === 0) {
@@ -258,7 +259,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             this._grid.setColumns(this._grid.getColumns());
             this._grid.invalidateAllRows();
             this._grid.render();
-            if (this._gridSyncService) {
+            if (this._gridSyncService && this._grid.getColumnWidths) {
                 this._gridSyncService.rowNumberColumnWidthPX = this._grid.getColumnWidths()[0];
             }
             hasGridStructureChanges = true;
@@ -369,7 +370,6 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             enableColumnReorder: this.enableColumnReorder,
             renderRowWithRange: true,
             showRowNumber: true,
-            showDataTypeIcon: this.showDataTypeIcon,
             showHeader: this.showHeader,
             rowHeight: this._rowHeight,
             defaultColumnWidth: 120,
@@ -395,7 +395,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                                    Please extend the Slick with the selection model as a function before registering`);
                 }
             }
-            this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
+            if (this._grid.getScrollbarDimensions) {
+                this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
+            }
             this._gridSyncSubscription = this._gridSyncService.updated
                 .filter(p => p === 'columnWidthPXs')
                 .debounceTime(10)
@@ -558,10 +560,6 @@ __decorate([
 __decorate([
     core_1.Input(), 
     __metadata('design:type', Boolean)
-], SlickGrid.prototype, "showDataTypeIcon", void 0);
-__decorate([
-    core_1.Input(), 
-    __metadata('design:type', Boolean)
 ], SlickGrid.prototype, "enableColumnReorder", void 0);
 __decorate([
     core_1.Input(), 
@@ -618,3 +616,5 @@ SlickGrid = SlickGrid_1 = __decorate([
     __metadata('design:paramtypes', [Object, Object])
 ], SlickGrid);
 exports.SlickGrid = SlickGrid;
+
+//# sourceMappingURL=slickgrid.js.map

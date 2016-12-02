@@ -5,17 +5,22 @@ const ts = require('gulp-typescript');
 const merge = require('merge2');
 const connect = require('gulp-connect');
 const tslint = require('gulp-tslint');
+var srcmap = require('gulp-sourcemaps');
 
 const tsproj = ts.createProject('./tsconfig.json');
-const exmapProj = ts.createProject('./tsconfig.json', { declaration: false });
+const exampProj = ts.createProject('./tsconfig.json', { declaration: false });
 
 gulp.task('compile:src', () => {
     let tsResult = gulp.src(['components/**/*.ts', 'typings/**/*.ts'])
+                .pipe(srcmap.init())
                 .pipe(ts(tsproj));
 
     return merge([
         tsResult.dts.pipe(gulp.dest('./components/')),
-        tsResult.js.pipe(gulp.dest('./components/'))
+        tsResult.js.pipe(srcmap.write('.', {
+            sourceRoot: function(file) { return '/../'; }
+        }))
+        .pipe(gulp.dest('./components/'))
     ]);
 });
 
@@ -23,7 +28,11 @@ gulp.task('compile:examples', (done) => {
     let promises = [];
     promises.push(new Promise((resolve) => {
         gulp.src(['examples/**/*.ts', 'typings/**/*.ts'])
-            .pipe(ts(exmapProj))
+            .pipe(srcmap.init())
+            .pipe(ts(exampProj))
+            .pipe(srcmap.write('.', {
+                sourceRoot: function(file){ return file.cwd + '/examples'; }
+            }))
             .pipe(gulp.dest('dist'))
             .on('end', () => {
                 resolve();
@@ -95,7 +104,7 @@ gulp.task('serve', () => {
 });
 
 gulp.task('clean', () => {
-    return del(['components/**/*.js', 'components/**/*.d.ts', 'dist', 'index.js', 'index.d.ts'])
+    return del(['components/**/*.js', 'components/**/*.map', 'components/**/*.d.ts', 'dist', 'index.js', 'index.d.ts'])
 });
 
 gulp.task('build', gulp.series('clean', 'lint', 'compile'));

@@ -134,3 +134,5 @@ class VirtualizedCollection {
     }
 }
 exports.VirtualizedCollection = VirtualizedCollection;
+
+//# sourceMappingURL=virtualizedcollection.js.map

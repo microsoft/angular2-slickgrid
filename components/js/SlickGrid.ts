@@ -121,7 +121,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() columnsLoading: string[] = [];
     @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     @Input() showHeader: boolean = true;
-    @Input() showDataTypeIcon: boolean = true;
     @Input() enableColumnReorder: boolean = false;
     @Input() enableAsyncPostRender: boolean = false;
     @Input() selectionModel: string = '';
@@ -197,9 +196,11 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                 this._grid.setColumns(this._gridColumns);
             }
             if (this._gridSyncService) {
-                let gridColumnWidths: number[] = this._grid.getColumnWidths();
-                this._gridSyncService.rowNumberColumnWidthPX = gridColumnWidths[0];
-                this._gridSyncService.columnWidthPXs = gridColumnWidths.slice(1);
+                if (this._grid.getColumnWidths) {
+                    let gridColumnWidths: number[] = this._grid.getColumnWidths();
+                    this._gridSyncService.rowNumberColumnWidthPX = gridColumnWidths[0];
+                    this._gridSyncService.columnWidthPXs = gridColumnWidths.slice(1);
+                }
             }
             hasGridStructureChanges = true;
 
@@ -224,7 +225,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             this._grid.setColumns(this._grid.getColumns());
             this._grid.invalidateAllRows();
             this._grid.render();
-            if (this._gridSyncService) {
+            if (this._gridSyncService && this._grid.getColumnWidths) {
                 this._gridSyncService.rowNumberColumnWidthPX = this._grid.getColumnWidths()[0];
             }
             hasGridStructureChanges = true;
@@ -419,7 +420,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             enableColumnReorder: this.enableColumnReorder,
             renderRowWithRange: true,
             showRowNumber: true,
-            showDataTypeIcon: this.showDataTypeIcon,
             showHeader: this.showHeader,
             rowHeight: this._rowHeight,
             defaultColumnWidth: 120,
@@ -449,7 +449,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                                    Please extend the Slick with the selection model as a function before registering`);
                 }
             }
-            this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
+            if (this._grid.getScrollbarDimensions) {
+                this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
+            }
             this._gridSyncSubscription = this._gridSyncService.updated
                 .filter(p => p === 'columnWidthPXs')
                 .debounceTime(10)

@@ -40,3 +40,5 @@ exports.CancellationToken = CancellationToken;
     FieldType[FieldType["Unknown"] = 5] = "Unknown";
 })(exports.FieldType || (exports.FieldType = {}));
 var FieldType = exports.FieldType;
+
+//# sourceMappingURL=interfaces.js.map

@@ -18,7 +18,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     columnsLoading: string[];
     overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     showHeader: boolean;
-    showDataTypeIcon: boolean;
     enableColumnReorder: boolean;
     enableAsyncPostRender: boolean;
     selectionModel: string;
