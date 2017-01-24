@@ -53,8 +53,17 @@ function getOverridableTextEditorClass(grid) {
         applyValue(item, state) {
             let currentRow = grid.dataRows.at(this._rowIndex);
             let colIndex = grid.getColumnIndex(this._args.column.name);
-            currentRow.values[colIndex] = state;
-            this._textEditor.applyValue(item, state);
+            let dataLength = grid.dataRows.getLength();
+            if (this._rowIndex === dataLength) {
+                let rowToAdd = { values: [] };
+                rowToAdd.values[colIndex] = state;
+                let data = grid.dataRows;
+                data.push(rowToAdd);
+            }
+            else {
+                currentRow.values[colIndex] = state;
+                this._textEditor.applyValue(item, state);
+            }
         }
         ;
         isValueChanged() {
@@ -90,7 +99,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.enableAsyncPostRender = false;
         this.selectionModel = '';
         this.plugins = [];
-        this.enableEditing = false;
+        this.enableEditing = true;
         this.loadFinished = new core_1.EventEmitter();
         this.editingFinished = new core_1.EventEmitter();
         this.contextMenu = new core_1.EventEmitter();
@@ -184,16 +193,16 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     /* andresse: commented out 11/1/2016 due to minification issues
     private _finishGridEditingFn: (e: any, args: any) => void;
     */
-    beginEditSession() {
+    enterEditSession() {
         let options = this._grid.getOptions();
         options.editable = true;
-        // options.enableAddRow = true;
+        options.enableAddRow = true;
         this._grid.setOptions(options);
     }
     endEditSession() {
         let options = this._grid.getOptions();
         options.editable = false;
-        // options.enableAddRow = false;
+        options.enableAddRow = false;
         this._grid.setOptions(options);
     }
     getColumnIndex(name) {
@@ -378,6 +387,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             rowHeight: this._rowHeight,
             defaultColumnWidth: 120,
             editable: this.enableEditing,
+            enableAddRow: false,
             enableAsyncPostRender: this.enableAsyncPostRender,
             editorFactory: {
                 getEditor: this.getColumnEditor
@@ -512,6 +522,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     }
     setCallbackOnDataRowsChanged() {
         if (this.dataRows) {
+            if (this.enableEditing) {
+                this.enterEditSession();
+            }
             this.dataRows.setCollectionChangedCallback((change, startIndex, count) => {
                 this.renderGridDataRowsRange(startIndex, count);
             });
@@ -649,7 +662,7 @@ __decorate([
     __metadata('design:type', Function), 
     __metadata('design:paramtypes', []), 
     __metadata('design:returntype', void 0)
-], SlickGrid.prototype, "beginEditSession", null);
+], SlickGrid.prototype, "enterEditSession", null);
 __decorate([
     core_1.Output(), 
     __metadata('design:type', Function), 

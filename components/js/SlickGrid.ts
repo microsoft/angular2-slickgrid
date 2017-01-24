@@ -49,8 +49,16 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
         applyValue(item, state): void {
             let currentRow = grid.dataRows.at(this._rowIndex);
             let colIndex = grid.getColumnIndex(this._args.column.name);
-            currentRow.values[colIndex] = state;
-            this._textEditor.applyValue(item, state);
+            let dataLength: number = grid.dataRows.getLength();
+
+            if (this._rowIndex === dataLength) {
+                let rowToAdd: IGridDataRow = { values: [] };
+                rowToAdd.values[colIndex] = state;
+                // TODO add data to new row
+            } else {
+                currentRow.values[colIndex] = state;
+                this._textEditor.applyValue(item, state);
+            }
         };
 
         isValueChanged(): boolean {
@@ -95,7 +103,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() enableAsyncPostRender: boolean = false;
     @Input() selectionModel: string = '';
     @Input() plugins: string[] = [];
-    @Input() enableEditing: boolean = false;
+    @Input() enableEditing: boolean = true;
     @Input() topRowNumber: number;
 
     @Input() isColumnEditable: (column: number) => boolean;
@@ -136,14 +144,14 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Output() public enterEditSession(): void {
         let options: any = this._grid.getOptions();
         options.editable = true;
-        // options.enableAddRow = true;
+        options.enableAddRow = true;
         this._grid.setOptions(options);
     }
 
     @Output() public endEditSession(): void {
         let options: any = this._grid.getOptions();
         options.editable = false;
-        // options.enableAddRow = false;
+        options.enableAddRow = false;
         this._grid.setOptions(options);
     }
 
@@ -447,6 +455,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             rowHeight: this._rowHeight,
             defaultColumnWidth: 120,
             editable: this.enableEditing,
+            enableAddRow: false,
             enableAsyncPostRender: this.enableAsyncPostRender,
             editorFactory: {
                 getEditor: this.getColumnEditor
@@ -602,6 +611,10 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     private setCallbackOnDataRowsChanged(): void {
         if (this.dataRows) {
+            if (this.enableEditing) {
+                this.enterEditSession();
+            }
+
             this.dataRows.setCollectionChangedCallback((change: CollectionChange, startIndex: number, count: number) => {
                 this.renderGridDataRowsRange(startIndex, count);
             });

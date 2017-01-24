@@ -61,7 +61,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private _leftPx;
     private _activeEditingRow;
     private _activeEditingRowHasChanges;
-    beginEditSession(): void;
+    enterEditSession(): void;
     endEditSession(): void;
     getColumnIndex(name: string): number;
     handleEditorCellChange(rowNumber: number): void;
