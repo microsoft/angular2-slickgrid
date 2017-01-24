@@ -58,15 +58,14 @@
     color: black
 }
 
-.grid .slick-cell.editable {
-    padding: 0
-}
-
 .grid .slick-cell.editable input {
-    padding: .5em .8em .4em;
-    /* height: 100%; */
-    padding: .4em .65em .1em;
+    padding: .2em .65em .1em;
     letter-spacing: .03em
+	height: 100%;
+	outline: none;
+	border: none; 
+	color: inherit; 
+	background-color: transparent;
 }
 
 .grid .slick-cell.editable input:focus {

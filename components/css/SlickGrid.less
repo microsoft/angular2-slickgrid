@@ -41,13 +41,14 @@
         }
 
         &.editable {
-            padding: 0;
             input {
                 .grid-cell-padding;
-                height: 100%;
                 padding: 0.4em 0.65em 0.1em;
+				height: 100%;
+				outline: none;
+				border: none; 
+				background-color: transparent;
                 letter-spacing: @grid-content-letter-spacing;
-
                 &:focus {
                     outline-offset: 0;
                 }

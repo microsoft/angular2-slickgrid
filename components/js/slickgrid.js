@@ -57,8 +57,6 @@ function getOverridableTextEditorClass(grid) {
             if (this._rowIndex === dataLength) {
                 let rowToAdd = { values: [] };
                 rowToAdd.values[colIndex] = state;
-                let data = grid.dataRows;
-                data.push(rowToAdd);
             }
             else {
                 currentRow.values[colIndex] = state;
