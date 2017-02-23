@@ -1,0 +1,24 @@
+# Node generated
+node_modules
+npm-debug.log
+
+# OS generated
+Thumbs.db
+.DS_Store
+
+# Build generated
+typings
+dist
+
+# Ignored files
+*.ts
+!*.d.ts
+.gitignore
+gulpfile.js
+tsconfig.json
+tslint.json
+typings.json
+
+# Ignored directories
+.vscode
+examples
