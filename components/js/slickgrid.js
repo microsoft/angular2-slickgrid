@@ -42,6 +42,12 @@ function getOverridableTextEditorClass(grid) {
         }
         ;
         loadValue(item, rowNumber) {
+            if (grid.overrideCellFn) {
+                let overrideValue = grid.overrideCellFn(rowNumber, this._args.column.id);
+                if (overrideValue !== undefined) {
+                    item[this._args.column.id] = overrideValue;
+                }
+            }
             this._rowIndex = rowNumber;
             this._textEditor.loadValue(item);
         }
@@ -54,12 +60,8 @@ function getOverridableTextEditorClass(grid) {
             let currentRow = grid.dataRows.at(this._rowIndex);
             let colIndex = grid.getColumnIndex(this._args.column.name);
             let dataLength = grid.dataRows.getLength();
-            // If this is the "new row" at the very bottom
-            if (this._rowIndex === dataLength) {
-                let rowToAdd = { values: [] };
-                rowToAdd.values[colIndex] = state;
-            }
-            else {
+            // If this is not the "new row" at the very bottom
+            if (this._rowIndex !== dataLength) {
                 currentRow.values[colIndex] = state;
                 this._textEditor.applyValue(item, state);
             }
@@ -88,7 +90,6 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     constructor(_el, _gridSyncService) {
         this._el = _el;
         this._gridSyncService = _gridSyncService;
-        this.editableColumnIds = [];
         this.highlightedCells = [];
         this.blurredColumns = [];
         this.contextColumns = [];
@@ -113,12 +114,12 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this._leftPx = 0;
         /* tslint:disable:member-ordering */
         this.getColumnEditor = (column) => {
-            let columnId = column.id;
-            let isColumnLoading = this.columnsLoading && this.columnsLoading.indexOf(columnId) !== -1;
-            let canEditColumn = columnId !== undefined && !isColumnLoading;
             if (this.isColumnEditable && !this.isColumnEditable(this.getColumnIndex(column))) {
                 return undefined;
             }
+            let columnId = column.id;
+            let isColumnLoading = this.columnsLoading && this.columnsLoading.indexOf(columnId) !== -1;
+            let canEditColumn = columnId !== undefined && !isColumnLoading;
             if (canEditColumn) {
                 return getOverridableTextEditorClass(this);
             }
@@ -433,11 +434,6 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             this._columnNameToIndex[this._gridColumns[i].name] = i;
         }
         this.onResize();
-        let self = this;
-        setTimeout(function () {
-            self.enterEditSession();
-            console.log('enterEditSession ');
-        }, 5000);
     }
     subscribeToScroll() {
         this._grid.onScroll.subscribe((e, args) => {
@@ -552,6 +548,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     }
     setCallbackOnDataRowsChanged() {
         if (this.dataRows) {
+            // We must wait until we get the first set of dataRows before we enable editing or slickgrid will complain
             if (this.enableEditing) {
                 this.enterEditSession();
             }
@@ -585,10 +582,6 @@ __decorate([
     core_1.Input(), 
     __metadata('design:type', Rx_1.Observable)
 ], SlickGrid.prototype, "resized", void 0);
-__decorate([
-    core_1.Input(), 
-    __metadata('design:type', Array)
-], SlickGrid.prototype, "editableColumnIds", void 0);
 __decorate([
     core_1.Input(), 
     __metadata('design:type', Array)

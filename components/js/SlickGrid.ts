@@ -38,6 +38,13 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
         };
 
         loadValue(item, rowNumber): void {
+            if (grid.overrideCellFn) {
+                let overrideValue = grid.overrideCellFn(rowNumber, this._args.column.id);
+                if (overrideValue !== undefined) {
+                    item[this._args.column.id] = overrideValue;
+                }
+            }
+
             this._rowIndex = rowNumber;
             this._textEditor.loadValue(item);
         };
@@ -51,13 +58,8 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
             let colIndex = grid.getColumnIndex(this._args.column.name);
             let dataLength: number = grid.dataRows.getLength();
 
-            // If this is the "new row" at the very bottom
-            if (this._rowIndex === dataLength) {
-                let rowToAdd: IGridDataRow = { values: [] };
-                rowToAdd.values[colIndex] = state;
-
-            // If this is a normal edit
-            } else {
+            // If this is not the "new row" at the very bottom
+            if (this._rowIndex !== dataLength) {
                 currentRow.values[colIndex] = state;
                 this._textEditor.applyValue(item, state);
             }
@@ -94,7 +96,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() columnDefinitions: IColumnDefinition[];
     @Input() dataRows: IObservableCollection<IGridDataRow>;
     @Input() resized: Observable<any>;
-    @Input() editableColumnIds: string[] = [];
     @Input() highlightedCells: {row: number, column: number}[] = [];
     @Input() blurredColumns: string[] = [];
     @Input() contextColumns: string[] = [];
@@ -378,14 +379,13 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     /* tslint:disable:member-ordering */
     private getColumnEditor = (column: any): any => {
-        let columnId = column.id;
-        let isColumnLoading = this.columnsLoading && this.columnsLoading.indexOf(columnId) !== -1;
-        let canEditColumn = columnId !== undefined && !isColumnLoading;
-
         if (this.isColumnEditable && !this.isColumnEditable(this.getColumnIndex(column))) {
             return undefined;
         }
 
+        let columnId = column.id;
+        let isColumnLoading = this.columnsLoading && this.columnsLoading.indexOf(columnId) !== -1;
+        let canEditColumn = columnId !== undefined && !isColumnLoading;
         if (canEditColumn) {
             return getOverridableTextEditorClass(this);
         }
@@ -638,6 +638,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     private setCallbackOnDataRowsChanged(): void {
         if (this.dataRows) {
+            // We must wait until we get the first set of dataRows before we enable editing or slickgrid will complain
             if (this.enableEditing) {
                 this.enterEditSession();
             }

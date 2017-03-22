@@ -8,7 +8,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     columnDefinitions: IColumnDefinition[];
     dataRows: IObservableCollection<IGridDataRow>;
     resized: Observable<any>;
-    editableColumnIds: string[];
     highlightedCells: {
         row: number;
         column: number;
