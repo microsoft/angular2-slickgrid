@@ -54,6 +54,7 @@ function getOverridableTextEditorClass(grid) {
             let currentRow = grid.dataRows.at(this._rowIndex);
             let colIndex = grid.getColumnIndex(this._args.column.name);
             let dataLength = grid.dataRows.getLength();
+            // If this is the "new row" at the very bottom
             if (this._rowIndex === dataLength) {
                 let rowToAdd = { values: [] };
                 rowToAdd.values[colIndex] = state;
@@ -72,6 +73,7 @@ function getOverridableTextEditorClass(grid) {
             let result = { valid: true, msg: undefined };
             let colIndex = grid.getColumnIndex(this._args.column.name);
             let newValue = this._textEditor.getValue();
+            // TODO: It would be nice if we could support the isCellEditValid as a promise 
             if (grid.isCellEditValid && !grid.isCellEditValid(this._rowIndex, colIndex, newValue)) {
                 result.valid = false;
             }
@@ -97,7 +99,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.enableAsyncPostRender = false;
         this.selectionModel = '';
         this.plugins = [];
-        this.enableEditing = true;
+        this.enableEditing = false;
         this.loadFinished = new core_1.EventEmitter();
         this.editingFinished = new core_1.EventEmitter();
         this.contextMenu = new core_1.EventEmitter();
@@ -192,12 +194,14 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     private _finishGridEditingFn: (e: any, args: any) => void;
     */
     enterEditSession() {
+        this.enableEditing = true;
         let options = this._grid.getOptions();
         options.editable = true;
-        options.enableAddRow = true;
+        options.enableAddRow = false; // TODO change when we support enableAddRow
         this._grid.setOptions(options);
     }
     endEditSession() {
+        this.enableEditing = false;
         let options = this._grid.getOptions();
         options.editable = false;
         options.enableAddRow = false;
@@ -210,15 +214,19 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         // Need explicit undefined check due to row 0
         let firstTimeEditingRow = this._activeEditingRow === undefined;
         let editingNewRow = rowNumber !== this._activeEditingRow;
+        // Check if we have existing edits on a row and we are leaving that row
         if (!firstTimeEditingRow && editingNewRow && this._activeEditingRowHasChanges) {
+            this._activeEditingRowHasChanges = false;
+            this._activeEditingRow = undefined;
+            this.rowEditTryCommit.emit();
         }
+        // Check if we are entering a new row
         if (firstTimeEditingRow || editingNewRow) {
+            this._activeEditingRow = rowNumber;
             this.rowEditBegin.emit({
                 row: rowNumber
             });
         }
-        this._activeEditingRow = rowNumber;
-        this._activeEditingRowHasChanges = false;
     }
     static getDataWithSchema(data, columns) {
         let dataWithSchema = {};
@@ -322,6 +330,8 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.subscribeToCellChanged();
         this.subscribeToBeforeEditCell();
         this.subscribeToContextMenu();
+        this.subscribeToActiveCellChanged();
+        this._activeEditingRowHasChanges = false;
     }
     ngAfterViewInit() {
         this.loadFinished.emit();
@@ -423,6 +433,11 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             this._columnNameToIndex[this._gridColumns[i].name] = i;
         }
         this.onResize();
+        let self = this;
+        setTimeout(function () {
+            self.enterEditSession();
+            console.log('enterEditSession ');
+        }, 5000);
     }
     subscribeToScroll() {
         this._grid.onScroll.subscribe((e, args) => {
@@ -441,24 +456,41 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     }
     subscribeToCellChanged() {
         this._grid.onCellChange.subscribe((e, args) => {
-            /*
             let modifiedColumn = this.columnDefinitions[args.cell - 1];
             this._activeEditingRowHasChanges = true;
-            this.cellEditEnd.emit({
-                column: this.getColumnIndex(args.column.name),
+            this.cellEditTryCommit.emit({
+                column: this.getColumnIndex(modifiedColumn.name),
                 row: args.row,
                 newValue: args.item[modifiedColumn.id]
             });
-            */
         });
     }
     subscribeToBeforeEditCell() {
         this._grid.onBeforeEditCell.subscribe((e, args) => {
-            // this.handleEditorCellChange(args.row);
+            this.handleEditorCellChange(args.row);
             this.cellEditBegin.emit({
                 column: this.getColumnIndex(args.column.name),
                 row: args.row
             });
+        });
+    }
+    subscribeToActiveCellChanged() {
+        // Subscribe to all active cell changes to be able to catch when we tab to the header on the next row
+        this._grid.onActiveCellChanged.subscribe((e, args) => {
+            // If editing is disabled or this isn't the header, ignore. 
+            // We assume the header is always column 0, as it is hardcoded to be that way in initGrid
+            if (!this.enableEditing || args.cell !== 0) {
+                return;
+            }
+            let rowNumber = args.row;
+            let haveRowEdits = this._activeEditingRow !== undefined;
+            let tabbedToNextRow = rowNumber !== this._activeEditingRow; // Need explicit undefined check due to row 0
+            // If we tabbed from an edited row to the header of the next row, emit a rowEditTryCommit
+            if (haveRowEdits && tabbedToNextRow && this._activeEditingRowHasChanges) {
+                this.rowEditTryCommit.emit();
+                this._activeEditingRow = undefined;
+                this._activeEditingRowHasChanges = false;
+            }
         });
     }
     updateColumnWidths() {
