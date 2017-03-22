@@ -119,9 +119,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Output() topRowNumberChange: EventEmitter<number> = new EventEmitter<number>();
 
     @Output() cellEditBegin: EventEmitter<{row: number, column: number }> = new EventEmitter<{row: number, column: number}>();
-    @Output() cellEditTryCommit: EventEmitter<{row: number, column: number, newValue: any}> = new EventEmitter<{row: number, column: number, newValue: any}>();
+    @Output() cellEditExit: EventEmitter<{row: number, column: number, newValue: any}> = new EventEmitter<{row: number, column: number, newValue: any}>();
     @Output() rowEditBegin: EventEmitter<{row: number}> = new EventEmitter<{row: number}>();
-    @Output() rowEditTryCommit: EventEmitter<void> = new EventEmitter<void>();
+    @Output() rowEditExit: EventEmitter<{row: number}> = new EventEmitter<{row: number}>();
 
     @HostListener('focus')
     onFocus(): void {
@@ -146,18 +146,18 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     */
 
     @Output() public enterEditSession(): void {
-        this.enableEditing = true;
-        let options: any = this._grid.getOptions();
-        options.editable = true;
-        options.enableAddRow = false; // TODO change when we support enableAddRow
-        this._grid.setOptions(options);
+        this.changeEditSession(true);
     }
 
     @Output() public endEditSession(): void {
-        this.enableEditing = false;
+        this.changeEditSession(false);
+    }
+
+    private changeEditSession(enabled: boolean): void {
+        this.enableEditing = enabled;
         let options: any = this._grid.getOptions();
-        options.editable = false;
-        options.enableAddRow = false;
+        options.editable = enabled;
+        options.enableAddRow = false; // TODO change to " options.enableAddRow = false;" when we support enableAddRow
         this._grid.setOptions(options);
     }
 
@@ -173,8 +173,10 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         // Check if we have existing edits on a row and we are leaving that row
         if (!firstTimeEditingRow && editingNewRow && this._activeEditingRowHasChanges) {
             this._activeEditingRowHasChanges = false;
+            this.rowEditExit.emit({
+                row: this._activeEditingRow
+            });
             this._activeEditingRow = undefined;
-            this.rowEditTryCommit.emit();
         }
 
         // Check if we are entering a new row
@@ -529,7 +531,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         this._grid.onCellChange.subscribe((e, args) => {
             let modifiedColumn = this.columnDefinitions[args.cell - 1];
             this._activeEditingRowHasChanges = true;
-            this.cellEditTryCommit.emit({
+            this.cellEditExit.emit({
                 column: this.getColumnIndex(modifiedColumn.name),
                 row: args.row,
                 newValue: args.item[modifiedColumn.id]
@@ -561,9 +563,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             let haveRowEdits = this._activeEditingRow !== undefined;
             let tabbedToNextRow = rowNumber !== this._activeEditingRow; // Need explicit undefined check due to row 0
 
-            // If we tabbed from an edited row to the header of the next row, emit a rowEditTryCommit
+            // If we tabbed from an edited row to the header of the next row, emit a rowEditExit
             if (haveRowEdits && tabbedToNextRow && this._activeEditingRowHasChanges) {
-                this.rowEditTryCommit.emit();
+                this.rowEditExit.emit();
                 this._activeEditingRow = undefined;
                 this._activeEditingRowHasChanges = false;
             }

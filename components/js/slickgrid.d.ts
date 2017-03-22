@@ -37,7 +37,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
         row: number;
         column: number;
     }>;
-    cellEditTryCommit: EventEmitter<{
+    cellEditExit: EventEmitter<{
         row: number;
         column: number;
         newValue: any;
@@ -45,7 +45,9 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     rowEditBegin: EventEmitter<{
         row: number;
     }>;
-    rowEditTryCommit: EventEmitter<void>;
+    rowEditExit: EventEmitter<{
+        row: number;
+    }>;
     onFocus(): void;
     private _grid;
     private _gridColumns;
@@ -60,6 +62,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private _activeEditingRowHasChanges;
     enterEditSession(): void;
     endEditSession(): void;
+    private changeEditSession(enabled);
     getColumnIndex(name: string): number;
     handleEditorCellChange(rowNumber: number): void;
     private static getDataWithSchema(data, columns);

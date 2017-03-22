@@ -106,9 +106,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.contextMenu = new core_1.EventEmitter();
         this.topRowNumberChange = new core_1.EventEmitter();
         this.cellEditBegin = new core_1.EventEmitter();
-        this.cellEditTryCommit = new core_1.EventEmitter();
+        this.cellEditExit = new core_1.EventEmitter();
         this.rowEditBegin = new core_1.EventEmitter();
-        this.rowEditTryCommit = new core_1.EventEmitter();
+        this.rowEditExit = new core_1.EventEmitter();
         this._rowHeight = 29;
         this._topRow = 0;
         this._leftPx = 0;
@@ -195,17 +195,16 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     private _finishGridEditingFn: (e: any, args: any) => void;
     */
     enterEditSession() {
-        this.enableEditing = true;
-        let options = this._grid.getOptions();
-        options.editable = true;
-        options.enableAddRow = false; // TODO change when we support enableAddRow
-        this._grid.setOptions(options);
+        this.changeEditSession(true);
     }
     endEditSession() {
-        this.enableEditing = false;
+        this.changeEditSession(false);
+    }
+    changeEditSession(enabled) {
+        this.enableEditing = enabled;
         let options = this._grid.getOptions();
-        options.editable = false;
-        options.enableAddRow = false;
+        options.editable = enabled;
+        options.enableAddRow = false; // TODO change to " options.enableAddRow = false;" when we support enableAddRow
         this._grid.setOptions(options);
     }
     getColumnIndex(name) {
@@ -218,8 +217,10 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         // Check if we have existing edits on a row and we are leaving that row
         if (!firstTimeEditingRow && editingNewRow && this._activeEditingRowHasChanges) {
             this._activeEditingRowHasChanges = false;
+            this.rowEditExit.emit({
+                row: this._activeEditingRow
+            });
             this._activeEditingRow = undefined;
-            this.rowEditTryCommit.emit();
         }
         // Check if we are entering a new row
         if (firstTimeEditingRow || editingNewRow) {
@@ -454,7 +455,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this._grid.onCellChange.subscribe((e, args) => {
             let modifiedColumn = this.columnDefinitions[args.cell - 1];
             this._activeEditingRowHasChanges = true;
-            this.cellEditTryCommit.emit({
+            this.cellEditExit.emit({
                 column: this.getColumnIndex(modifiedColumn.name),
                 row: args.row,
                 newValue: args.item[modifiedColumn.id]
@@ -481,9 +482,9 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             let rowNumber = args.row;
             let haveRowEdits = this._activeEditingRow !== undefined;
             let tabbedToNextRow = rowNumber !== this._activeEditingRow; // Need explicit undefined check due to row 0
-            // If we tabbed from an edited row to the header of the next row, emit a rowEditTryCommit
+            // If we tabbed from an edited row to the header of the next row, emit a rowEditExit
             if (haveRowEdits && tabbedToNextRow && this._activeEditingRowHasChanges) {
-                this.rowEditTryCommit.emit();
+                this.rowEditExit.emit();
                 this._activeEditingRow = undefined;
                 this._activeEditingRowHasChanges = false;
             }
@@ -665,7 +666,7 @@ __decorate([
 __decorate([
     core_1.Output(), 
     __metadata('design:type', core_1.EventEmitter)
-], SlickGrid.prototype, "cellEditTryCommit", void 0);
+], SlickGrid.prototype, "cellEditExit", void 0);
 __decorate([
     core_1.Output(), 
     __metadata('design:type', core_1.EventEmitter)
@@ -673,7 +674,7 @@ __decorate([
 __decorate([
     core_1.Output(), 
     __metadata('design:type', core_1.EventEmitter)
-], SlickGrid.prototype, "rowEditTryCommit", void 0);
+], SlickGrid.prototype, "rowEditExit", void 0);
 __decorate([
     core_1.HostListener('focus'), 
     __metadata('design:type', Function), 
