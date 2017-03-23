@@ -12,48 +12,10 @@ import { ISlickRange } from './selectionmodel';
 
 declare let Slick;
 
-function getDisabledEditorClass(loadingString: string): any {
-    class DisabledEditor {
-        constructor(args: any) {
-            jQuery('<input type="text" class="editor-text" disabled="true" value="' + loadingString + '" />')
-                .appendTo(args.container);
-        }
-
-        destroy(): any {
-            return undefined;
-        };
-
-        focus(): any {
-            return undefined;
-        };
-
-        isValueChanged(): boolean {
-            return false;
-        };
-
-        serializeValue(): string {
-            return '';
-        };
-
-        loadValue(item: any): any {
-            return undefined;
-        };
-
-        applyValue(item: any, state: any): any {
-            return undefined;
-        };
-
-        validate(): any {
-            return true;
-        };
-    }
-
-    return DisabledEditor;
-}
-
 function getOverridableTextEditorClass(grid: SlickGrid): any {
     class OverridableTextEditor {
         private _textEditor: any;
+        private _rowIndex: number;
 
         constructor(private _args: any) {
             this._textEditor = new Slick.Editors.Text(_args);
@@ -76,11 +38,14 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
         };
 
         loadValue(item, rowNumber): void {
-            let overrideValue = grid.overrideCellFn(rowNumber, this._args.column.id);
-            if (overrideValue !== undefined) {
-                item[this._args.column.id] = overrideValue;
+            if (grid.overrideCellFn) {
+                let overrideValue = grid.overrideCellFn(rowNumber, this._args.column.id);
+                if (overrideValue !== undefined) {
+                    item[this._args.column.id] = overrideValue;
+                }
             }
 
+            this._rowIndex = rowNumber;
             this._textEditor.loadValue(item);
         };
 
@@ -89,7 +54,15 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
         };
 
         applyValue(item, state): void {
-            this._textEditor.applyValue(item, state);
+            let currentRow = grid.dataRows.at(this._rowIndex);
+            let colIndex = grid.getColumnIndex(this._args.column.name);
+            let dataLength: number = grid.dataRows.getLength();
+
+            // If this is not the "new row" at the very bottom
+            if (this._rowIndex !== dataLength) {
+                currentRow.values[colIndex] = state;
+                this._textEditor.applyValue(item, state);
+            }
         };
 
         isValueChanged(): boolean {
@@ -97,7 +70,16 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
         };
 
         validate(): any {
-            return this._textEditor.validate();
+            let result: any =  { valid: true, msg: undefined };
+            let colIndex: number = grid.getColumnIndex(this._args.column.name);
+            let newValue: any = this._textEditor.getValue();
+
+            // TODO: It would be nice if we could support the isCellEditValid as a promise 
+            if (grid.isCellEditValid && !grid.isCellEditValid(this._rowIndex, colIndex, newValue)) {
+                result.valid = false;
+            }
+
+            return result;
         };
     }
 
@@ -114,7 +96,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() columnDefinitions: IColumnDefinition[];
     @Input() dataRows: IObservableCollection<IGridDataRow>;
     @Input() resized: Observable<any>;
-    @Input() editableColumnIds: string[] = [];
     @Input() highlightedCells: {row: number, column: number}[] = [];
     @Input() blurredColumns: string[] = [];
     @Input() contextColumns: string[] = [];
@@ -126,14 +107,21 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() enableAsyncPostRender: boolean = false;
     @Input() selectionModel: string = '';
     @Input() plugins: string[] = [];
+    @Input() enableEditing: boolean = false;
+    @Input() topRowNumber: number;
+
+    @Input() isColumnEditable: (column: number) => boolean;
+    @Input() isCellEditValid: (row: number, column: number, newValue: any) => boolean;
 
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
-    @Output() cellChanged: EventEmitter<{column: string, row: number, newValue: any}> = new EventEmitter<{column: string, row: number, newValue: any}>();
     @Output() editingFinished: EventEmitter<any> = new EventEmitter();
     @Output() contextMenu: EventEmitter<{x: number, y: number}> = new EventEmitter<{x: number, y: number}>();
-
-    @Input() topRowNumber: number;
     @Output() topRowNumberChange: EventEmitter<number> = new EventEmitter<number>();
+
+    @Output() cellEditBegin: EventEmitter<{row: number, column: number }> = new EventEmitter<{row: number, column: number}>();
+    @Output() cellEditExit: EventEmitter<{row: number, column: number, newValue: any}> = new EventEmitter<{row: number, column: number, newValue: any}>();
+    @Output() rowEditBegin: EventEmitter<{row: number}> = new EventEmitter<{row: number}>();
+    @Output() rowEditExit: EventEmitter<{row: number}> = new EventEmitter<{row: number}>();
 
     @HostListener('focus')
     onFocus(): void {
@@ -144,15 +132,61 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     private _grid: any;
     private _gridColumns: ISlickGridColumn[];
+    private _columnNameToIndex: any;
     private _gridData: ISlickGridData;
     private _rowHeight = 29;
     private _resizeSubscription: Subscription;
     private _gridSyncSubscription: Subscription;
     private _topRow: number = 0;
     private _leftPx: number = 0;
+    private _activeEditingRow: number;
+    private _activeEditingRowHasChanges: boolean;
     /* andresse: commented out 11/1/2016 due to minification issues
     private _finishGridEditingFn: (e: any, args: any) => void;
     */
+
+    @Output() public enterEditSession(): void {
+        this.changeEditSession(true);
+    }
+
+    @Output() public endEditSession(): void {
+        this.changeEditSession(false);
+    }
+
+    private changeEditSession(enabled: boolean): void {
+        this.enableEditing = enabled;
+        let options: any = this._grid.getOptions();
+        options.editable = enabled;
+        options.enableAddRow = false; // TODO change to " options.enableAddRow = false;" when we support enableAddRow
+        this._grid.setOptions(options);
+    }
+
+    public getColumnIndex(name: string): number {
+        return this._columnNameToIndex[name];
+    }
+
+    public handleEditorCellChange(rowNumber: number): void {
+        // Need explicit undefined check due to row 0
+        let firstTimeEditingRow = this._activeEditingRow === undefined;
+        let editingNewRow = rowNumber !== this._activeEditingRow;
+
+        // Check if we have existing edits on a row and we are leaving that row
+        if (!firstTimeEditingRow && editingNewRow && this._activeEditingRowHasChanges) {
+            this._activeEditingRowHasChanges = false;
+            this.rowEditExit.emit({
+                row: this._activeEditingRow
+            });
+            this._activeEditingRow = undefined;
+        }
+
+        // Check if we are entering a new row
+        if (firstTimeEditingRow || editingNewRow) {
+            this._activeEditingRow = rowNumber;
+            this.rowEditBegin.emit({
+                row: rowNumber
+            });
+        }
+    }
 
     private static getDataWithSchema(data: IGridDataRow, columns: ISlickGridColumn[]): any {
         let dataWithSchema = {};
@@ -282,7 +316,11 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         // https://github.com/mleibman/SlickGrid/wiki/Grid-Events
         this.subscribeToScroll();
         this.subscribeToCellChanged();
+        this.subscribeToBeforeEditCell();
         this.subscribeToContextMenu();
+        this.subscribeToActiveCellChanged();
+
+        this._activeEditingRowHasChanges = false;
     }
 
     ngAfterViewInit(): void {
@@ -343,15 +381,16 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     /* tslint:disable:member-ordering */
     private getColumnEditor = (column: any): any => {
-        let columnId = column.id;
-        let isEditable = this.editableColumnIds && this.editableColumnIds.indexOf(columnId) !== -1;
-        let isColumnLoading = this.columnsLoading && this.columnsLoading.indexOf(columnId) !== -1;
-        if (isEditable) {
-            return isColumnLoading
-                ? getDisabledEditorClass('')
-                : getOverridableTextEditorClass(this);
+        if (this.isColumnEditable && !this.isColumnEditable(this.getColumnIndex(column))) {
+            return undefined;
         }
 
+        let columnId = column.id;
+        let isColumnLoading = this.columnsLoading && this.columnsLoading.indexOf(columnId) !== -1;
+        let canEditColumn = columnId !== undefined && !isColumnLoading;
+        if (canEditColumn) {
+            return getOverridableTextEditorClass(this);
+        }
         return undefined;
     };
 
@@ -423,7 +462,8 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             showHeader: this.showHeader,
             rowHeight: this._rowHeight,
             defaultColumnWidth: 120,
-            editable: true,
+            editable: this.enableEditing,
+            enableAddRow: false, // TODO change when we support enableAddRow
             enableAsyncPostRender: this.enableAsyncPostRender,
             editorFactory: {
                 getEditor: this.getColumnEditor
@@ -438,6 +478,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             this._gridData,
             this._gridColumns,
             options);
+
         if (this._gridSyncService) {
             if (this.selectionModel) {
                 if (Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
@@ -460,6 +501,12 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         for (let plugin of this.plugins) {
             this.registerPlugin(plugin);
         }
+
+        this._columnNameToIndex = {};
+        for (let i = 0; i < this._gridColumns.length; i++) {
+            this._columnNameToIndex[this._gridColumns[i].name] = i;
+        }
+
         this.onResize();
     }
 
@@ -483,16 +530,45 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     private subscribeToCellChanged(): void {
         this._grid.onCellChange.subscribe((e, args) => {
             let modifiedColumn = this.columnDefinitions[args.cell - 1];
-            let oldValue = this.dataRows.at(args.row).values[args.cell - 1];
-            let newValue = args.item[modifiedColumn.id];
-            if (oldValue && oldValue.toString() === newValue) {
-                return;
-            }
-            this.cellChanged.emit({
-                column: modifiedColumn.id,
+            this._activeEditingRowHasChanges = true;
+            this.cellEditExit.emit({
+                column: this.getColumnIndex(modifiedColumn.name),
                 row: args.row,
                 newValue: args.item[modifiedColumn.id]
             });
+        });
+    }
+
+    private subscribeToBeforeEditCell(): void {
+        this._grid.onBeforeEditCell.subscribe((e, args) => {
+            this.handleEditorCellChange(args.row);
+            this.cellEditBegin.emit({
+                column: this.getColumnIndex(args.column.name),
+                row: args.row
+            });
+        });
+    }
+
+    private subscribeToActiveCellChanged (): void {
+        // Subscribe to all active cell changes to be able to catch when we tab to the header on the next row
+        this._grid.onActiveCellChanged.subscribe((e, args) => {
+
+            // If editing is disabled or this isn't the header, ignore. 
+            // We assume the header is always column 0, as it is hardcoded to be that way in initGrid
+            if (!this.enableEditing || args.cell !== 0) {
+                return;
+            }
+
+            let rowNumber = args.row;
+            let haveRowEdits = this._activeEditingRow !== undefined;
+            let tabbedToNextRow = rowNumber !== this._activeEditingRow; // Need explicit undefined check due to row 0
+
+            // If we tabbed from an edited row to the header of the next row, emit a rowEditExit
+            if (haveRowEdits && tabbedToNextRow && this._activeEditingRowHasChanges) {
+                this.rowEditExit.emit();
+                this._activeEditingRow = undefined;
+                this._activeEditingRowHasChanges = false;
+            }
         });
     }
 
@@ -564,6 +640,11 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     private setCallbackOnDataRowsChanged(): void {
         if (this.dataRows) {
+            // We must wait until we get the first set of dataRows before we enable editing or slickgrid will complain
+            if (this.enableEditing) {
+                this.enterEditSession();
+            }
+
             this.dataRows.setCollectionChangedCallback((change: CollectionChange, startIndex: number, count: number) => {
                 this.renderGridDataRowsRange(startIndex, count);
             });
