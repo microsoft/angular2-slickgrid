@@ -15,7 +15,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     blurredColumns: string[];
     contextColumns: string[];
     columnsLoading: string[];
-    overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     showHeader: boolean;
     showDataTypeIcon: boolean;
     enableColumnReorder: boolean;
@@ -24,6 +23,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     plugins: string[];
     enableEditing: boolean;
     topRowNumber: number;
+    overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     isColumnEditable: (column: number) => boolean;
     isCellEditValid: (row: number, column: number, newValue: any) => boolean;
     loadFinished: EventEmitter<void>;

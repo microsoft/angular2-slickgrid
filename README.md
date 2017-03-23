@@ -1,3 +1,7 @@
+## Repository State
+
+The feature-set for angular2-slickgrid is incomplete. If there are missing features you would like, please submit an issue and/or create a pull request implementing the feature. 
+
 ## Set up Node, npm, gulp and typings
 
 ### Node and npm

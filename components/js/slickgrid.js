@@ -44,7 +44,7 @@ function getOverridableTextEditorClass(grid) {
         ;
         loadValue(item, rowNumber) {
             if (grid.overrideCellFn) {
-                let overrideValue = grid.overrideCellFn(rowNumber, this._args.column.id);
+                let overrideValue = grid.overrideCellFn(rowNumber, this._args.column.id, item[this._args.column.id]);
                 if (overrideValue !== undefined) {
                     item[this._args.column.id] = overrideValue;
                 }
@@ -622,10 +622,6 @@ __decorate([
 ], SlickGrid.prototype, "columnsLoading", void 0);
 __decorate([
     core_1.Input(), 
-    __metadata('design:type', Function)
-], SlickGrid.prototype, "overrideCellFn", void 0);
-__decorate([
-    core_1.Input(), 
     __metadata('design:type', Boolean)
 ], SlickGrid.prototype, "showHeader", void 0);
 __decorate([
@@ -656,6 +652,10 @@ __decorate([
     core_1.Input(), 
     __metadata('design:type', Number)
 ], SlickGrid.prototype, "topRowNumber", void 0);
+__decorate([
+    core_1.Input(), 
+    __metadata('design:type', Function)
+], SlickGrid.prototype, "overrideCellFn", void 0);
 __decorate([
     core_1.Input(), 
     __metadata('design:type', Function)

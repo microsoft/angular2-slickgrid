@@ -64,7 +64,7 @@ function getOverridableTextEditorClass(grid: SlickGrid): any {
 
         loadValue(item, rowNumber): void {
             if (grid.overrideCellFn) {
-                let overrideValue = grid.overrideCellFn(rowNumber, this._args.column.id);
+                let overrideValue = grid.overrideCellFn(rowNumber, this._args.column.id, item[this._args.column.id]);
                 if (overrideValue !== undefined) {
                     item[this._args.column.id] = overrideValue;
                 }
@@ -128,7 +128,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() blurredColumns: string[] = [];
     @Input() contextColumns: string[] = [];
     @Input() columnsLoading: string[] = [];
-    @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     @Input() showHeader: boolean = true;
     @Input() showDataTypeIcon: boolean = true;
     @Input() enableColumnReorder: boolean = false;
@@ -138,6 +137,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() enableEditing: boolean = false;
     @Input() topRowNumber: number;
 
+    @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     @Input() isColumnEditable: (column: number) => boolean;
     @Input() isCellEditValid: (row: number, column: number, newValue: any) => boolean;
 
