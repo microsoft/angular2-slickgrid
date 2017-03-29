@@ -399,6 +399,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             rowHeight: this._rowHeight,
             defaultColumnWidth: 120,
             editable: this.enableEditing,
+            autoEdit: true,
             enableAddRow: false, // TODO change when we support enableAddRow
             enableAsyncPostRender: this.enableAsyncPostRender,
             editorFactory: {
