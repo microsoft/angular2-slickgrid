@@ -381,7 +381,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             rowHeight: this._rowHeight,
             defaultColumnWidth: 120,
             editable: this.enableEditing,
-            autoEdit: true,
+            autoEdit: this.enableEditing,
             enableAddRow: false,
             enableAsyncPostRender: this.enableAsyncPostRender,
             editorFactory: {
