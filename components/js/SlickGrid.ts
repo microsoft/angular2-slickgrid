@@ -502,7 +502,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     /* tslint:disable:member-ordering */
     private getColumnEditor = (column: any): any => {
-        if (this.isColumnEditable && !this.isColumnEditable(this.getColumnIndex(column))) {
+        if (this.isColumnEditable && !this.isColumnEditable(this.getColumnIndex(column.name))) {
             return undefined;
         }
 

@@ -120,7 +120,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this._leftPx = 0;
         /* tslint:disable:member-ordering */
         this.getColumnEditor = (column) => {
-            if (this.isColumnEditable && !this.isColumnEditable(this.getColumnIndex(column))) {
+            if (this.isColumnEditable && !this.isColumnEditable(this.getColumnIndex(column.name))) {
                 return undefined;
             }
             let columnId = column.id;
