@@ -365,7 +365,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         const self = this;
         this._grid.onContextMenu.subscribe(function (event) {
             event.preventDefault();
-            self.contextMenu.emit({ x: event.pageX, y: event.pageY });
+            self.contextMenu.emit(event);
         });
     }
     ////////// Private functions //////////////////////////////////////////////

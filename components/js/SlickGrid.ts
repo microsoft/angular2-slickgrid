@@ -143,7 +143,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
     @Output() editingFinished: EventEmitter<any> = new EventEmitter();
-    @Output() contextMenu: EventEmitter<{x: number, y: number}> = new EventEmitter<{x: number, y: number}>();
+    @Output() contextMenu: EventEmitter<any> = new EventEmitter<any>();
     @Output() topRowNumberChange: EventEmitter<number> = new EventEmitter<number>();
 
     @Output() cellEditBegin: EventEmitter<{row: number, column: number }> = new EventEmitter<{row: number, column: number}>();
@@ -381,7 +381,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         const self = this;
         this._grid.onContextMenu.subscribe(function (event): void {
             event.preventDefault();
-            self.contextMenu.emit({x: event.pageX, y: event.pageY});
+            self.contextMenu.emit(event);
         });
     }
 
