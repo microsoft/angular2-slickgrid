@@ -28,10 +28,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     isCellEditValid: (row: number, column: number, newValue: any) => boolean;
     loadFinished: EventEmitter<void>;
     editingFinished: EventEmitter<any>;
-    contextMenu: EventEmitter<{
-        x: number;
-        y: number;
-    }>;
+    contextMenu: EventEmitter<any>;
     topRowNumberChange: EventEmitter<number>;
     cellEditBegin: EventEmitter<{
         row: number;
