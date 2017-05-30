@@ -11,7 +11,7 @@ const exmapProj = ts.createProject('./tsconfig.json', { declaration: false });
 
 gulp.task('compile:src', () => {
     let tsResult = gulp.src(['components/**/*.ts', 'typings/**/*.ts'])
-                .pipe(ts(tsproj));
+                .pipe(tsproj());
 
     return merge([
         tsResult.dts.pipe(gulp.dest('./components/')),
@@ -23,7 +23,7 @@ gulp.task('compile:examples', (done) => {
     let promises = [];
     promises.push(new Promise((resolve) => {
         gulp.src(['examples/**/*.ts', 'typings/**/*.ts'])
-            .pipe(ts(exmapProj))
+            .pipe(exmapProj())
             .pipe(gulp.dest('dist'))
             .on('end', () => {
                 resolve();
@@ -62,7 +62,7 @@ gulp.task('compile:examples', (done) => {
 
 gulp.task('compile:index', () => {
     let tsResult = gulp.src(['./index.ts', 'typings/**/*.ts'])
-            .pipe(ts(tsproj));
+            .pipe(tsproj());
 
     return merge([
         tsResult.dts.pipe(gulp.dest('./')),

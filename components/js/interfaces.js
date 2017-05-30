@@ -1,19 +1,20 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-const Rx_1 = require('rxjs/Rx');
+const Rx_1 = require("rxjs/Rx");
+var NotificationType;
 (function (NotificationType) {
     NotificationType[NotificationType["Error"] = 0] = "Error";
     NotificationType[NotificationType["UpdateAvailable"] = 1] = "UpdateAvailable";
     NotificationType[NotificationType["UpdateDownloaded"] = 2] = "UpdateDownloaded";
-})(exports.NotificationType || (exports.NotificationType = {}));
-var NotificationType = exports.NotificationType;
+})(NotificationType = exports.NotificationType || (exports.NotificationType = {}));
+var CollectionChange;
 (function (CollectionChange) {
     CollectionChange[CollectionChange["ItemsReplaced"] = 0] = "ItemsReplaced";
-})(exports.CollectionChange || (exports.CollectionChange = {}));
-var CollectionChange = exports.CollectionChange;
+})(CollectionChange = exports.CollectionChange || (exports.CollectionChange = {}));
 class CancellationToken {
     constructor() {
         this._isCanceled = false;
@@ -31,6 +32,7 @@ class CancellationToken {
     }
 }
 exports.CancellationToken = CancellationToken;
+var FieldType;
 (function (FieldType) {
     FieldType[FieldType["String"] = 0] = "String";
     FieldType[FieldType["Boolean"] = 1] = "Boolean";
@@ -38,5 +40,4 @@ exports.CancellationToken = CancellationToken;
     FieldType[FieldType["Decimal"] = 3] = "Decimal";
     FieldType[FieldType["Date"] = 4] = "Date";
     FieldType[FieldType["Unknown"] = 5] = "Unknown";
-})(exports.FieldType || (exports.FieldType = {}));
-var FieldType = exports.FieldType;
+})(FieldType = exports.FieldType || (exports.FieldType = {}));

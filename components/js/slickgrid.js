@@ -1,8 +1,8 @@
+"use strict";
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,10 +15,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-const core_1 = require('@angular/core');
-const Rx_1 = require('rxjs/Rx');
-const interfaces_1 = require('./interfaces');
-const gridsync_service_1 = require('./gridsync.service');
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@angular/core");
+const Rx_1 = require("rxjs/Rx");
+const interfaces_1 = require("./interfaces");
+const gridsync_service_1 = require("./gridsync.service");
 ////////// Text Editors ///////////////////////////////////////////////////////
 function getOverridableTextEditorClass(grid) {
     class OverridableTextEditor {
@@ -87,7 +88,6 @@ function getOverridableTextEditorClass(grid) {
     return OverridableTextEditor;
 }
 ////////// Implementation /////////////////////////////////////////////////////
-let SlickGrid_1;
 let SlickGrid = SlickGrid_1 = class SlickGrid {
     /* andresse: commented out 11/1/2016 due to minification issues
     private _finishGridEditingFn: (e: any, args: any) => void;
@@ -594,114 +594,114 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     }
 };
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Array)
+    core_1.Input(),
+    __metadata("design:type", Array)
 ], SlickGrid.prototype, "columnDefinitions", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Object)
+    core_1.Input(),
+    __metadata("design:type", Object)
 ], SlickGrid.prototype, "dataRows", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Rx_1.Observable)
+    core_1.Input(),
+    __metadata("design:type", Rx_1.Observable)
 ], SlickGrid.prototype, "resized", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Array)
+    core_1.Input(),
+    __metadata("design:type", Array)
 ], SlickGrid.prototype, "highlightedCells", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Array)
+    core_1.Input(),
+    __metadata("design:type", Array)
 ], SlickGrid.prototype, "blurredColumns", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Array)
+    core_1.Input(),
+    __metadata("design:type", Array)
 ], SlickGrid.prototype, "contextColumns", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Array)
+    core_1.Input(),
+    __metadata("design:type", Array)
 ], SlickGrid.prototype, "columnsLoading", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Boolean)
+    core_1.Input(),
+    __metadata("design:type", Boolean)
 ], SlickGrid.prototype, "showHeader", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Boolean)
+    core_1.Input(),
+    __metadata("design:type", Boolean)
 ], SlickGrid.prototype, "showDataTypeIcon", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Boolean)
+    core_1.Input(),
+    __metadata("design:type", Boolean)
 ], SlickGrid.prototype, "enableColumnReorder", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Boolean)
+    core_1.Input(),
+    __metadata("design:type", Boolean)
 ], SlickGrid.prototype, "enableAsyncPostRender", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', String)
+    core_1.Input(),
+    __metadata("design:type", String)
 ], SlickGrid.prototype, "selectionModel", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Array)
+    core_1.Input(),
+    __metadata("design:type", Array)
 ], SlickGrid.prototype, "plugins", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Boolean)
+    core_1.Input(),
+    __metadata("design:type", Boolean)
 ], SlickGrid.prototype, "enableEditing", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Number)
+    core_1.Input(),
+    __metadata("design:type", Number)
 ], SlickGrid.prototype, "topRowNumber", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Function)
+    core_1.Input(),
+    __metadata("design:type", Function)
 ], SlickGrid.prototype, "overrideCellFn", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Function)
+    core_1.Input(),
+    __metadata("design:type", Function)
 ], SlickGrid.prototype, "isColumnEditable", void 0);
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Function)
+    core_1.Input(),
+    __metadata("design:type", Function)
 ], SlickGrid.prototype, "isCellEditValid", void 0);
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', core_1.EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "loadFinished", void 0);
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', core_1.EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "editingFinished", void 0);
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', core_1.EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "contextMenu", void 0);
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', core_1.EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "topRowNumberChange", void 0);
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', core_1.EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "cellEditBegin", void 0);
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', core_1.EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "cellEditExit", void 0);
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', core_1.EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "rowEditBegin", void 0);
 __decorate([
-    core_1.Output(), 
-    __metadata('design:type', core_1.EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "rowEditExit", void 0);
 __decorate([
-    core_1.HostListener('focus'), 
-    __metadata('design:type', Function), 
-    __metadata('design:paramtypes', []), 
-    __metadata('design:returntype', void 0)
+    core_1.HostListener('focus'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
 ], SlickGrid.prototype, "onFocus", null);
 SlickGrid = SlickGrid_1 = __decorate([
     core_1.Component({
@@ -711,8 +711,8 @@ SlickGrid = SlickGrid_1 = __decorate([
         encapsulation: core_1.ViewEncapsulation.None
     }),
     __param(0, core_1.Inject(core_1.forwardRef(() => core_1.ElementRef))),
-    __param(1, core_1.Optional()),
-    __param(1, core_1.Inject(core_1.forwardRef(() => gridsync_service_1.GridSyncService))), 
-    __metadata('design:paramtypes', [Object, Object])
+    __param(1, core_1.Optional()), __param(1, core_1.Inject(core_1.forwardRef(() => gridsync_service_1.GridSyncService))),
+    __metadata("design:paramtypes", [Object, Object])
 ], SlickGrid);
 exports.SlickGrid = SlickGrid;
+var SlickGrid_1;

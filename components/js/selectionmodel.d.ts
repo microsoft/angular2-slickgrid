@@ -5,8 +5,8 @@ export declare class SelectionModel implements ISlickSelectionModel {
     private _onSelectedRangesChanged;
     private _slickRangeFactory;
     constructor(_rowSelectionModel: ISlickSelectionModel, _handler: ISlickEventHandler, _onSelectedRangesChanged: ISlickEvent, _slickRangeFactory: (fromRow: number, fromCell: number, toRow: number, toCell: number) => ISlickRange);
-    range: ISlickRange[];
-    onSelectedRangesChanged: ISlickEvent;
+    readonly range: ISlickRange[];
+    readonly onSelectedRangesChanged: ISlickEvent;
     init(grid: ISlickGrid): void;
     destroy(): void;
     setSelectedRanges(ranges: ISlickRange[]): void;
@@ -23,7 +23,7 @@ export declare class SelectionModel implements ISlickSelectionModel {
     private static areRangesIdentical(lhs, rhs);
     private getColumnRange(columnId);
     private getColumnRangeByIndex(columnIndex);
-    private isColumnSelectionCurrently;
+    private readonly isColumnSelectionCurrently;
     private updateSelectedRanges(ranges);
 }
 export interface ISlickSelectionModel {
