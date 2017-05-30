@@ -23,8 +23,8 @@ export declare class CancellationToken {
     private _isCanceled;
     private _canceled;
     cancel(): void;
-    isCanceled: boolean;
-    canceled: Observable<any>;
+    readonly isCanceled: boolean;
+    readonly canceled: Observable<any>;
 }
 export declare enum FieldType {
     String = 0,

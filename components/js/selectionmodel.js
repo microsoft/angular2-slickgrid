@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class SelectionModel {
     constructor(_rowSelectionModel, _handler, _onSelectedRangesChanged, _slickRangeFactory) {
         this._rowSelectionModel = _rowSelectionModel;

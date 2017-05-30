@@ -16,13 +16,13 @@ export declare class GridSyncService {
     openTypeDropdown(columnIndex: number): void;
     private setColumnWidthPX(index, widthPX);
     underlyingSelectionModel: any;
-    updated: Observable<string>;
-    typeDropdownOffset: Observable<[number, number]>;
+    readonly updated: Observable<string>;
+    readonly typeDropdownOffset: Observable<[number, number]>;
     scrollLeftPX: number;
     scrollBarWidthPX: number;
     columnWidthPXs: number[];
     rowNumberColumnWidthPX: number;
-    selectionModel: SelectionModel;
+    readonly selectionModel: SelectionModel;
     isGridReadOnly: boolean;
     private notifyUpdates(propertyName);
 }

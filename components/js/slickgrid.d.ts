@@ -66,7 +66,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     ngOnDestroy(): void;
     enterEditSession(): void;
     endEditSession(): void;
-    onSelectedRowsChanged: ISlickEvent;
+    readonly onSelectedRowsChanged: ISlickEvent;
     getSelectedRows(): number[];
     getColumnIndex(name: string): number;
     getSelectedRanges(): ISlickRange[];
