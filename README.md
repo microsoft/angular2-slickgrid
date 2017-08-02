@@ -21,9 +21,9 @@ v5.9.0
 ```
 
 ### Gulp
-Install gulp
+Install gulp-cli
 ```bash
-[sudo] npm install gulp -g
+[sudo] npm install gulp-cli -g
 ```
 From the root of the repo, install all of the build dependencies:
 ```bash
