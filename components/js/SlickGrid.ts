@@ -132,8 +132,8 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() showDataTypeIcon: boolean = true;
     @Input() enableColumnReorder: boolean = false;
     @Input() enableAsyncPostRender: boolean = false;
-    @Input() selectionModel: string = '';
-    @Input() plugins: string[] = [];
+    @Input() selectionModel: Slick.SelectionModel<any, any>;
+    @Input() plugins: Slick.Plugin<any>[] = [];
     @Input() enableEditing: boolean = false;
     @Input() topRowNumber: number;
 
@@ -344,13 +344,8 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     }
 
     // Registers a Slick plugin with the given name
-    public registerPlugin(plugin: string): void {
-        if (Slick[plugin] && typeof Slick[plugin] === 'function') {
-            this._grid.registerPlugin(new Slick[plugin]);
-        } else {
-            console.error(`Tried to register plugin ${plugin}, but none was found to be attached to Slick Grid or it was not a function.
-                        Please extend the Slick with the plugin as a function before registering`);
-        }
+    public registerPlugin(plugin: Slick.Plugin<any>): void {
+        this._grid.registerPlugin(plugin);
     }
 
     // Set this grid to be the active grid
@@ -418,14 +413,8 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
         if (this._gridSyncService) {
             if (this.selectionModel) {
-                if (Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
-                    this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
+                    this._gridSyncService.underlyingSelectionModel = this.selectionModel;
                     this._grid.setSelectionModel(this._gridSyncService.selectionModel);
-                } else {
-                    console.error(`Tried to register selection model ${this.selectionModel}, 
-                                   but none was found to be attached to Slick Grid or it was not a function.
-                                   Please extend the Slick with the selection model as a function before registering`);
-                }
             }
             this._gridSyncService.scrollBarWidthPX = this._grid.getScrollbarDimensions().width;
             this._gridSyncSubscription = this._gridSyncService.updated
