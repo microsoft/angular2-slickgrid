@@ -20,6 +20,7 @@ const core_1 = require("@angular/core");
 const Rx_1 = require("rxjs/Rx");
 const interfaces_1 = require("./interfaces");
 const gridsync_service_1 = require("./gridsync.service");
+const _ = require("underscore");
 ////////// Text Editors ///////////////////////////////////////////////////////
 function getOverridableTextEditorClass(grid) {
     class OverridableTextEditor {

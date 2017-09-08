@@ -10,7 +10,7 @@ import { IObservableCollection, CollectionChange, IGridDataRow, IColumnDefinitio
 import { GridSyncService } from './gridsync.service';
 import { ISlickRange, ISlickEvent } from './selectionmodel';
 
-declare let Slick;
+import * as _ from 'underscore';
 
 ////////// Interfaces /////////////////////////////////////////////////////////
 
