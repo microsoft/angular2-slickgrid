@@ -144,3 +144,5 @@ class SelectionModel {
     }
 }
 exports.SelectionModel = SelectionModel;
+
+//# sourceMappingURL=SelectionModel.js.map

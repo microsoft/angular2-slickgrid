@@ -727,3 +727,5 @@ SlickGrid = SlickGrid_1 = __decorate([
 ], SlickGrid);
 exports.SlickGrid = SlickGrid;
 var SlickGrid_1;
+
+//# sourceMappingURL=SlickGrid.js.map
