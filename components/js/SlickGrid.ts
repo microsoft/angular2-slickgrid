@@ -133,7 +133,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() enableColumnReorder: boolean = false;
     @Input() enableAsyncPostRender: boolean = false;
     @Input() selectionModel: string = '';
-    @Input() plugins: string[] = [];
+    @Input() plugins: Array<string | Slick.Plugin<any>> = [];
     @Input() enableEditing: boolean = false;
     @Input() topRowNumber: number;
 
@@ -439,8 +439,13 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                     this.updateColumnWidths();
                 });
         }
+
         for (let plugin of this.plugins) {
-            this.registerPlugin(plugin);
+            if (typeof plugin === 'string') {
+                this.registerPlugin(plugin);
+            } else {
+                this.registerPlugin(plugin);
+            }
         }
 
         this._columnNameToIndex = {};

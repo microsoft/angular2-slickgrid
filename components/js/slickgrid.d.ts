@@ -20,7 +20,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     enableColumnReorder: boolean;
     enableAsyncPostRender: boolean;
     selectionModel: string;
-    plugins: string[];
+    plugins: Array<string | Slick.Plugin<any>>;
     enableEditing: boolean;
     topRowNumber: number;
     overrideCellFn: (rowNumber, columnId, value?, data?) => string;
