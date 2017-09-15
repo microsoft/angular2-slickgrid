@@ -396,7 +396,11 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this._grid = new Slick.Grid(this._el.nativeElement.getElementsByClassName('grid')[0], this._gridData, this._gridColumns, options);
         if (this._gridSyncService) {
             if (this.selectionModel) {
-                if (Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
+                if (typeof this.selectionModel === 'object') {
+                    this._gridSyncService.underlyingSelectionModel = this.selectionModel;
+                    this._grid.setSelectionModel(this.selectionModel);
+                }
+                else if (typeof this.selectionModel === 'string' && Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
                     this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
                     this._grid.setSelectionModel(this._gridSyncService.selectionModel);
                 }
@@ -646,7 +650,7 @@ __decorate([
 ], SlickGrid.prototype, "enableAsyncPostRender", void 0);
 __decorate([
     core_1.Input(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], SlickGrid.prototype, "selectionModel", void 0);
 __decorate([
     core_1.Input(),
