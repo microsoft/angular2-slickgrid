@@ -344,8 +344,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     }
 
     // Registers a Slick plugin with the given name
-    public registerPlugin(plugin: Slick.Plugin<any>): void;
-    public registerPlugin(plugin: string): void;
     public registerPlugin(plugin: Slick.Plugin<any> | string): void {
         if (typeof plugin === 'object') {
             this._grid.registerPlugin(plugin);
@@ -424,7 +422,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             if (this.selectionModel) {
                 if (typeof this.selectionModel === 'object') {
                     this._gridSyncService.underlyingSelectionModel = this.selectionModel;
-                    this._grid.setSelectionModel(this.selectionModel);
+                    this._grid.setSelectionModel(this._gridSyncService.selectionModel);
                 } else if (typeof this.selectionModel === 'string' && Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
                     this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
                     this._grid.setSelectionModel(this._gridSyncService.selectionModel);
@@ -444,11 +442,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         }
 
         for (let plugin of this.plugins) {
-            if (typeof plugin === 'string') {
                 this.registerPlugin(plugin);
-            } else {
-                this.registerPlugin(plugin);
-            }
         }
 
         this._columnNameToIndex = {};

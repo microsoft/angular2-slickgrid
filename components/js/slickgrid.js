@@ -329,6 +329,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             return this._gridSyncService.selectionModel.getSelectedRanges();
         }
     }
+    // Registers a Slick plugin with the given name
     registerPlugin(plugin) {
         if (typeof plugin === 'object') {
             this._grid.registerPlugin(plugin);
@@ -398,7 +399,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             if (this.selectionModel) {
                 if (typeof this.selectionModel === 'object') {
                     this._gridSyncService.underlyingSelectionModel = this.selectionModel;
-                    this._grid.setSelectionModel(this.selectionModel);
+                    this._grid.setSelectionModel(this._gridSyncService.selectionModel);
                 }
                 else if (typeof this.selectionModel === 'string' && Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
                     this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
@@ -419,12 +420,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             });
         }
         for (let plugin of this.plugins) {
-            if (typeof plugin === 'string') {
-                this.registerPlugin(plugin);
-            }
-            else {
-                this.registerPlugin(plugin);
-            }
+            this.registerPlugin(plugin);
         }
         this._columnNameToIndex = {};
         for (let i = 0; i < this._gridColumns.length; i++) {
