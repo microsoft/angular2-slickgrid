@@ -70,6 +70,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     getSelectedRows(): number[];
     getColumnIndex(name: string): number;
     getSelectedRanges(): ISlickRange[];
+    registerPlugin(plugin: Slick.Plugin<any>): void;
     registerPlugin(plugin: string): void;
     setActive(): void;
     selection: ISlickRange[] | boolean;

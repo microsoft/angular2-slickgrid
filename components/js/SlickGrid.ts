@@ -344,8 +344,12 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     }
 
     // Registers a Slick plugin with the given name
-    public registerPlugin(plugin: string): void {
-        if (Slick[plugin] && typeof Slick[plugin] === 'function') {
+    public registerPlugin(plugin: Slick.Plugin<any>): void;
+    public registerPlugin(plugin: string): void;
+    public registerPlugin(plugin: Slick.Plugin<any> | string): void {
+        if (typeof plugin === 'object') {
+            this._grid.registerPlugin(plugin);
+        } else if (typeof plugin === 'string' && Slick[plugin] && typeof Slick[plugin] === 'function') {
             this._grid.registerPlugin(new Slick[plugin]);
         } else {
             console.error(`Tried to register plugin ${plugin}, but none was found to be attached to Slick Grid or it was not a function.

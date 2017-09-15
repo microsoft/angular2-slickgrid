@@ -329,9 +329,11 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             return this._gridSyncService.selectionModel.getSelectedRanges();
         }
     }
-    // Registers a Slick plugin with the given name
     registerPlugin(plugin) {
-        if (Slick[plugin] && typeof Slick[plugin] === 'function') {
+        if (typeof plugin === 'object') {
+            this._grid.registerPlugin(plugin);
+        }
+        else if (typeof plugin === 'string' && Slick[plugin] && typeof Slick[plugin] === 'function') {
             this._grid.registerPlugin(new Slick[plugin]);
         }
         else {
