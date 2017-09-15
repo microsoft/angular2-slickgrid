@@ -415,7 +415,12 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             });
         }
         for (let plugin of this.plugins) {
-            this.registerPlugin(plugin);
+            if (typeof plugin === 'string') {
+                this.registerPlugin(plugin);
+            }
+            else {
+                this.registerPlugin(plugin);
+            }
         }
         this._columnNameToIndex = {};
         for (let i = 0; i < this._gridColumns.length; i++) {
