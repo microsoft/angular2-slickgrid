@@ -132,7 +132,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() showDataTypeIcon: boolean = true;
     @Input() enableColumnReorder: boolean = false;
     @Input() enableAsyncPostRender: boolean = false;
-    @Input() selectionModel: string = '';
+    @Input() selectionModel: string | Slick.SelectionModel<any, any> = '';
     @Input() plugins: Array<string | Slick.Plugin<any>> = [];
     @Input() enableEditing: boolean = false;
     @Input() topRowNumber: number;
@@ -422,7 +422,10 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
         if (this._gridSyncService) {
             if (this.selectionModel) {
-                if (Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
+                if (typeof this.selectionModel === 'object') {
+                    this._gridSyncService.underlyingSelectionModel = this.selectionModel;
+                    this._grid.setSelectionModel(this.selectionModel);
+                } else if (typeof this.selectionModel === 'string' && Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
                     this._gridSyncService.underlyingSelectionModel = new Slick[this.selectionModel]();
                     this._grid.setSelectionModel(this._gridSyncService.selectionModel);
                 } else {
