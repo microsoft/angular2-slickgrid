@@ -19,8 +19,8 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     showDataTypeIcon: boolean;
     enableColumnReorder: boolean;
     enableAsyncPostRender: boolean;
-    selectionModel: string;
-    plugins: string[];
+    selectionModel: string | Slick.SelectionModel<any, any>;
+    plugins: Array<string | Slick.Plugin<any>>;
     enableEditing: boolean;
     topRowNumber: number;
     overrideCellFn: (rowNumber, columnId, value?, data?) => string;
@@ -70,7 +70,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     getSelectedRows(): number[];
     getColumnIndex(name: string): number;
     getSelectedRanges(): ISlickRange[];
-    registerPlugin(plugin: string): void;
+    registerPlugin(plugin: Slick.Plugin<any> | string): void;
     setActive(): void;
     selection: ISlickRange[] | boolean;
     subscribeToContextMenu(): void;

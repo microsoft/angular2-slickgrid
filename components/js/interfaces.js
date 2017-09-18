@@ -41,3 +41,5 @@ var FieldType;
     FieldType[FieldType["Date"] = 4] = "Date";
     FieldType[FieldType["Unknown"] = 5] = "Unknown";
 })(FieldType = exports.FieldType || (exports.FieldType = {}));
+
+//# sourceMappingURL=interfaces.js.map

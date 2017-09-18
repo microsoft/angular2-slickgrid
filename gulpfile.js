@@ -5,17 +5,21 @@ const ts = require('gulp-typescript');
 const merge = require('merge2');
 const connect = require('gulp-connect');
 const tslint = require('gulp-tslint');
+const sm = require('gulp-sourcemaps');
 
 const tsproj = ts.createProject('./tsconfig.json');
 const exmapProj = ts.createProject('./tsconfig.json', { declaration: false });
 
 gulp.task('compile:src', () => {
     let tsResult = gulp.src(['components/**/*.ts', 'typings/**/*.ts'])
+                .pipe(sm.init())
                 .pipe(tsproj());
 
     return merge([
         tsResult.dts.pipe(gulp.dest('./components/')),
-        tsResult.js.pipe(gulp.dest('./components/'))
+        tsResult.js
+            .pipe(sm.write('.'))
+            .pipe(gulp.dest('./components/'))
     ]);
 });
 
