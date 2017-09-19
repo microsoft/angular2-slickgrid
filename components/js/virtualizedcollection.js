@@ -50,6 +50,22 @@ class DataWindow {
             }
         });
     }
+    invalidateIndex(index) {
+        if (this.lastLoadCancellationToken) {
+            this.lastLoadCancellationToken.isCancelled = true;
+        }
+        if (!this.contains(index)) {
+            return;
+        }
+        let cancellationToken = new LoadCancellationToken();
+        this.lastLoadCancellationToken = cancellationToken;
+        this.loadFunction(index, 1).then(data => {
+            if (!cancellationToken.isCancelled) {
+                this._data[index] = data[0];
+                this.loadCompleteCallback(index, 1);
+            }
+        });
+    }
 }
 class VirtualizedCollection {
     constructor(windowSize, length, loadFn, _placeHolderGenerator) {
@@ -102,6 +118,19 @@ class VirtualizedCollection {
             this._bufferWindowAfter.positionWindow(newWindowOffset, newWindowLength);
         }
         return currentData;
+    }
+    invalidateRange(start, end) {
+        for (let i = start; i <= end; i++) {
+            if (this._window.contains(i)) {
+                this._window.invalidateIndex(i);
+            }
+            else if (this._bufferWindowBefore.contains(i)) {
+                this._bufferWindowBefore.invalidateIndex(i);
+            }
+            else if (this._bufferWindowAfter.contains(i)) {
+                this._bufferWindowAfter.invalidateIndex(i);
+            }
+        }
     }
     getRangeFromCurrent(start, end) {
         let currentData = [];

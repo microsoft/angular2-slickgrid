@@ -18,6 +18,7 @@ export interface IObservableCollection<T> {
     at(index: number): T;
     getRange(start: number, end: number): T[];
     setCollectionChangedCallback(callback: (change: CollectionChange, startIndex: number, count: number) => void): void;
+    invalidateRange(start: number, end: number): void;
 }
 export declare class CancellationToken {
     private _isCanceled;
