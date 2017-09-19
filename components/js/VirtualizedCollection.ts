@@ -70,6 +70,26 @@ class DataWindow<TData> {
             }
         });
     }
+
+    invalidateIndex(index: number): void {
+        if (this.lastLoadCancellationToken) {
+            this.lastLoadCancellationToken.isCancelled = true;
+        }
+
+        if (!this.contains(index)) {
+            return;
+        }
+
+        let cancellationToken = new LoadCancellationToken();
+        this.lastLoadCancellationToken = cancellationToken;
+
+        this.loadFunction(index, 1).then(data => {
+            if (!cancellationToken.isCancelled) {
+                this._data[index] = data[0];
+                this.loadCompleteCallback(index, 1);
+            }
+        });
+    }
 }
 
 export class VirtualizedCollection<TData> implements IObservableCollection<TData> {
@@ -143,6 +163,18 @@ export class VirtualizedCollection<TData> implements IObservableCollection<TData
         }
 
         return currentData;
+    }
+
+    invalidateRange(start: number, end: number): void {
+        for (let i = start; i <= end; i++) {
+            if (this._window.contains(i)) {
+                this._window.invalidateIndex(i);
+            } else if (this._bufferWindowBefore.contains(i)) {
+                this._bufferWindowBefore.invalidateIndex(i);
+            } else if (this._bufferWindowAfter.contains(i)) {
+                this._bufferWindowAfter.invalidateIndex(i);
+            }
+        }
     }
 
     private getRangeFromCurrent(start: number, end: number): TData[] {
