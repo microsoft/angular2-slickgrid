@@ -132,6 +132,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() showDataTypeIcon: boolean = true;
     @Input() enableColumnReorder: boolean = false;
     @Input() enableAsyncPostRender: boolean = false;
+    @Input() forceSyncScrolling: boolean = false;
     @Input() selectionModel: string | Slick.SelectionModel<any, any> = '';
     @Input() plugins: Array<string | Slick.Plugin<any>> = [];
     @Input() enableEditing: boolean = false;
@@ -409,7 +410,8 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             },
             formatterFactory: {
                 getFormatter: this.getFormatter
-            }
+            },
+            forceSyncScrolling: this.forceSyncScrolling
         };
 
         this._grid = new Slick.Grid(
