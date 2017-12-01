@@ -104,6 +104,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.showDataTypeIcon = true;
         this.enableColumnReorder = false;
         this.enableAsyncPostRender = false;
+        this.forceSyncScrolling = false;
         this.selectionModel = '';
         this.plugins = [];
         this.enableEditing = false;
@@ -392,7 +393,8 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             },
             formatterFactory: {
                 getFormatter: this.getFormatter
-            }
+            },
+            forceSyncScrolling: this.forceSyncScrolling
         };
         this._grid = new Slick.Grid(this._el.nativeElement.getElementsByClassName('grid')[0], this._gridData, this._gridColumns, options);
         if (this._gridSyncService) {
@@ -644,6 +646,10 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", Boolean)
 ], SlickGrid.prototype, "enableAsyncPostRender", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
+], SlickGrid.prototype, "forceSyncScrolling", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", Object)

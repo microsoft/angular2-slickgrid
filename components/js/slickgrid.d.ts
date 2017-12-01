@@ -19,6 +19,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     showDataTypeIcon: boolean;
     enableColumnReorder: boolean;
     enableAsyncPostRender: boolean;
+    forceSyncScrolling: boolean;
     selectionModel: string | Slick.SelectionModel<any, any>;
     plugins: Array<string | Slick.Plugin<any>>;
     enableEditing: boolean;
