@@ -2,8 +2,8 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-export * from './components/js/gridsync.service';
-export * from './components/js/interfaces';
-export * from './components/js/selectionmodel';
-export * from './components/js/slickgrid';
-export * from './components/js/virtualizedcollection';
+export * from './js/gridsync.service';
+export * from './js/interfaces';
+export * from './js/selectionmodel';
+export * from './js/slickgrid';
+export * from './js/virtualizedcollection';
