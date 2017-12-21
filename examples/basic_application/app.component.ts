@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IObservableCollection, IGridDataRow, IColumnDefinition, FieldType,
-    VirtualizedCollection } from './../../index';
+    VirtualizedCollection } from './../../out/index';
 
 const numberOfColumns = 10;
 const numberOfRows = 200;

@@ -15,11 +15,14 @@ gulp.task('compile:src', () => {
                 .pipe(sm.init())
                 .pipe(tsproj());
 
+    let css = gulp.src(['components/**/*.css']);
+
     return merge([
-        tsResult.dts.pipe(gulp.dest('./components/')),
+        tsResult.dts.pipe(gulp.dest('./out/')),
         tsResult.js
             .pipe(sm.write('.'))
-            .pipe(gulp.dest('./components/'))
+            .pipe(gulp.dest('./out/')),
+        css.pipe(gulp.dest('./out/'))
     ]);
 });
 
@@ -64,17 +67,7 @@ gulp.task('compile:examples', (done) => {
     });
 });
 
-gulp.task('compile:index', () => {
-    let tsResult = gulp.src(['./index.ts', 'typings/**/*.ts'])
-            .pipe(tsproj());
-
-    return merge([
-        tsResult.dts.pipe(gulp.dest('./')),
-        tsResult.js.pipe(gulp.dest('./'))
-    ]);
-});
-
-gulp.task('compile', gulp.series('compile:src', 'compile:index', 'compile:examples'));
+gulp.task('compile', gulp.series('compile:src', 'compile:examples'));
 
 gulp.task('lint:src', () => {
     return gulp.src(['components/**/*.ts'])
@@ -99,9 +92,9 @@ gulp.task('serve', () => {
 });
 
 gulp.task('clean', () => {
-    return del(['components/**/*.js', 'components/**/*.d.ts', 'dist', 'index.js', 'index.d.ts'])
+    return del(['out', 'dist', 'index.js', 'index.d.ts'])
 });
 
 gulp.task('build', gulp.series('clean', 'lint', 'compile'));
 
-gulp.task('publish', gulp.series('clean', 'lint', 'compile:src', 'compile:index'));
+gulp.task('publish', gulp.series('clean', 'lint', 'compile:src'));
