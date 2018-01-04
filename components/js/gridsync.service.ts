@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs/Rx';
-import { SelectionModel, ISlickRange } from './selectionmodel';
+import { SelectionModel, ISlickRange } from './selectionModel';
 
 declare let Slick;
 

@@ -8,7 +8,7 @@ import { Component, Input, Output, Inject, forwardRef, OnChanges, OnInit, OnDest
 import { Observable, Subscription } from 'rxjs/Rx';
 import { IObservableCollection, CollectionChange, IGridDataRow, IColumnDefinition, FieldType } from './interfaces';
 import { GridSyncService } from './gridsync.service';
-import { ISlickRange, ISlickEvent } from './selectionmodel';
+import { ISlickRange, ISlickEvent } from './selectionModel';
 
 declare let Slick;
 
