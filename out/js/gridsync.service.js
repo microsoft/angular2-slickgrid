@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  *--------------------------------------------------------------------------------------------*/
 const core_1 = require("@angular/core");
 const Rx_1 = require("rxjs/Rx");
-const selectionmodel_1 = require("./selectionmodel");
+const selectionModel_1 = require("./selectionModel");
 let GridSyncService = class GridSyncService {
     constructor() {
         this.columnMinWidthPX = 30;
@@ -53,7 +53,7 @@ let GridSyncService = class GridSyncService {
         }
     }
     set underlyingSelectionModel(selectionModel) {
-        this._selectionModel = new selectionmodel_1.SelectionModel(selectionModel, new Slick.EventHandler(), new Slick.Event(), (fromRow, fromCell, toRow, toCell) => new Slick.Range(fromRow, fromCell, toRow, toCell));
+        this._selectionModel = new selectionModel_1.SelectionModel(selectionModel, new Slick.EventHandler(), new Slick.Event(), (fromRow, fromCell, toRow, toCell) => new Slick.Range(fromRow, fromCell, toRow, toCell));
     }
     get updated() {
         return this._updated;

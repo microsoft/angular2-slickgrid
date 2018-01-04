@@ -9,8 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  *--------------------------------------------------------------------------------------------*/
 __export(require("./js/gridsync.service"));
 __export(require("./js/interfaces"));
-__export(require("./js/selectionmodel"));
+__export(require("./js/selectionModel"));
 __export(require("./js/slickgrid"));
-__export(require("./js/virtualizedcollection"));
+__export(require("./js/virtualizedCollection"));
 
 //# sourceMappingURL=index.js.map

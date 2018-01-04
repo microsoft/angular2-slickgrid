@@ -1,7 +1,7 @@
 import { OnChanges, OnInit, OnDestroy, SimpleChange, EventEmitter, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { IObservableCollection, IGridDataRow, IColumnDefinition } from './interfaces';
-import { ISlickRange, ISlickEvent } from './selectionmodel';
+import { ISlickRange, ISlickEvent } from './selectionModel';
 export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     private _el;
     private _gridSyncService;

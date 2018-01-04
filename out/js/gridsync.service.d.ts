@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { SelectionModel } from './selectionmodel';
+import { SelectionModel } from './selectionModel';
 export declare class GridSyncService {
     columnMinWidthPX: number;
     private _scrollLeftPX;
