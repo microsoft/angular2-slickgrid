@@ -146,6 +146,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Output() contextMenu: EventEmitter<any> = new EventEmitter<any>();
     @Output() topRowNumberChange: EventEmitter<number> = new EventEmitter<number>();
 
+    @Output() activeCellChanged: EventEmitter<{row: number, column: number}> = new EventEmitter<{row: number, column: number}>();
     @Output() cellEditBegin: EventEmitter<{row: number, column: number }> = new EventEmitter<{row: number, column: number}>();
     @Output() cellEditExit: EventEmitter<{row: number, column: number, newValue: any}> = new EventEmitter<{row: number, column: number, newValue: any}>();
     @Output() rowEditBegin: EventEmitter<{row: number}> = new EventEmitter<{row: number}>();
@@ -637,6 +638,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                 this._activeEditingRow = undefined;
                 this._activeEditingRowHasChanges = false;
             }
+
+            // Emit that we've changed active cells
+            this.activeCellChanged.emit({row: args.row, column: args.cell});
         });
     }
 
