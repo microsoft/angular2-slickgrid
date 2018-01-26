@@ -111,6 +111,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.editingFinished = new core_1.EventEmitter();
         this.contextMenu = new core_1.EventEmitter();
         this.topRowNumberChange = new core_1.EventEmitter();
+        this.activeCellChanged = new core_1.EventEmitter();
         this.cellEditBegin = new core_1.EventEmitter();
         this.cellEditExit = new core_1.EventEmitter();
         this.rowEditBegin = new core_1.EventEmitter();
@@ -525,6 +526,8 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                 this._activeEditingRow = undefined;
                 this._activeEditingRowHasChanges = false;
             }
+            // Emit that we've changed active cells
+            this.activeCellChanged.emit({ row: args.row, column: args.cell });
         });
     }
     updateColumnWidths() {
@@ -688,6 +691,10 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "topRowNumberChange", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], SlickGrid.prototype, "activeCellChanged", void 0);
 __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
