@@ -277,7 +277,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         if (this.topRowNumber === undefined) {
             this.topRowNumber = 0;
         }
-        this._grid.scrollRowToTop(this.topRowNumber);
+        if (this.dataRows && this.dataRows.getLength() > 0) {
+            this._grid.scrollRowToTop(this.topRowNumber);
+        }
 
         if (this.resized) {
             // Re-rendering the grid is expensive. Throttle so we only do so every 100ms.
