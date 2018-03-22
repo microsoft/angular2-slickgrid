@@ -8,7 +8,7 @@ import { Component, Input, Output, Inject, forwardRef, OnChanges, OnInit, OnDest
 import { Observable, Subscription } from 'rxjs/Rx';
 import { IObservableCollection, CollectionChange, IGridDataRow, IColumnDefinition, FieldType } from './interfaces';
 import { GridSyncService } from './gridsync.service';
-import { ISlickRange, ISlickEvent } from './selectionModel';
+import { ISlickRange } from './selectionModel';
 
 declare let Slick;
 
@@ -140,6 +140,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     @Input() isColumnEditable: (column: number) => boolean;
     @Input() isCellEditValid: (row: number, column: number, newValue: any) => boolean;
+    @Input() private _rowHeight = 29;
 
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
     @Output() editingFinished: EventEmitter<any> = new EventEmitter();
@@ -159,11 +160,21 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private _grid: any;
+    public set rowHeight(val: number) {
+        this._rowHeight = val;
+        if (this._grid) {
+            this._grid.setOptions({ rowHeight: this.rowHeight });
+        }
+    }
+
+    public get rowHeight(): number {
+        return this._rowHeight;
+    }
+
+    private _grid: Slick.Grid<any>;
     private _gridColumns: ISlickGridColumn[];
     private _columnNameToIndex: any;
     private _gridData: ISlickGridData;
-    private _rowHeight = 29;
     private _resizeSubscription: Subscription;
     private _gridSyncSubscription: Subscription;
     private _topRow: number = 0;
@@ -325,7 +336,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     // Called whenever the grid's selected rows change 
     // Event args: { rows: number[] }
-    public get onSelectedRowsChanged(): ISlickEvent {
+    public get onSelectedRowsChanged(): Slick.Event<Slick.OnSelectedRowsChangedEventArgs<any>> {
         return this._grid.onSelectedRowsChanged;
     }
 
@@ -385,7 +396,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     public subscribeToContextMenu(): void {
         const self = this;
         this._grid.onContextMenu.subscribe(function (event): void {
-            event.preventDefault();
+            (<any>event).preventDefault();
             self.contextMenu.emit(event);
         });
     }
@@ -401,7 +412,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             showRowNumber: true,
             showDataTypeIcon: this.showDataTypeIcon,
             showHeader: this.showHeader,
-            rowHeight: this._rowHeight,
+            rowHeight: this.rowHeight,
             defaultColumnWidth: 120,
             editable: this.enableEditing,
             autoEdit: this.enableEditing,
@@ -584,7 +595,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     private subscribeToScroll(): void {
         this._grid.onScroll.subscribe((e, args) => {
             let scrollTop = args.scrollTop;
-            let scrollRow = Math.floor(scrollTop / this._rowHeight);
+            let scrollRow = Math.floor(scrollTop / this.rowHeight);
             scrollRow = scrollRow < 0 ? 0 : scrollRow;
             if (scrollRow !== this._topRow) {
                 this._topRow = scrollRow;
@@ -649,7 +660,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         for (let i = 0; i < this._gridColumns.length; i++) {
             this._gridColumns[i].width = this._gridSyncService.columnWidthPXs[i];
         }
-        this._grid.setColumnWidths(this._gridColumns, true);
+        this._grid.setColumnWidths(this._gridColumns);
     }
 
     private updateSchema(): void {
