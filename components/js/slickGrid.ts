@@ -140,7 +140,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     @Input() isColumnEditable: (column: number) => boolean;
     @Input() isCellEditValid: (row: number, column: number, newValue: any) => boolean;
-    @Input() private _rowHeight = 29;
 
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
     @Output() editingFinished: EventEmitter<any> = new EventEmitter();
@@ -160,7 +159,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    public set rowHeight(val: number) {
+    @Input() public set rowHeight(val: number) {
         this._rowHeight = val;
         if (this._grid) {
             this._grid.setOptions({ rowHeight: this.rowHeight });
@@ -171,6 +170,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         return this._rowHeight;
     }
 
+    private _rowHeight = 29;
     private _grid: Slick.Grid<any>;
     private _gridColumns: ISlickGridColumn[];
     private _columnNameToIndex: any;
