@@ -1,7 +1,7 @@
 import { OnChanges, OnInit, OnDestroy, SimpleChange, EventEmitter, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { IObservableCollection, IGridDataRow, IColumnDefinition } from './interfaces';
-import { ISlickRange, ISlickEvent } from './selectionModel';
+import { ISlickRange } from './selectionModel';
 export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     private _el;
     private _gridSyncService;
@@ -26,6 +26,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     isColumnEditable: (column: number) => boolean;
     isCellEditValid: (row: number, column: number, newValue: any) => boolean;
+    private _rowHeight;
     loadFinished: EventEmitter<void>;
     editingFinished: EventEmitter<any>;
     contextMenu: EventEmitter<any>;
@@ -50,11 +51,11 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
         row: number;
     }>;
     onFocus(): void;
+    rowHeight: number;
     private _grid;
     private _gridColumns;
     private _columnNameToIndex;
     private _gridData;
-    private _rowHeight;
     private _resizeSubscription;
     private _gridSyncSubscription;
     private _topRow;
@@ -70,7 +71,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     ngOnDestroy(): void;
     enterEditSession(): void;
     endEditSession(): void;
-    readonly onSelectedRowsChanged: ISlickEvent;
+    readonly onSelectedRowsChanged: Slick.Event<Slick.OnSelectedRowsChangedEventArgs<any>>;
     getSelectedRows(): number[];
     getColumnIndex(name: string): number;
     getSelectedRanges(): ISlickRange[];
