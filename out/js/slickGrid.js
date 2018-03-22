@@ -107,7 +107,6 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.selectionModel = '';
         this.plugins = [];
         this.enableEditing = false;
-        this._rowHeight = 29;
         this.loadFinished = new core_1.EventEmitter();
         this.editingFinished = new core_1.EventEmitter();
         this.contextMenu = new core_1.EventEmitter();
@@ -117,6 +116,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         this.cellEditExit = new core_1.EventEmitter();
         this.rowEditBegin = new core_1.EventEmitter();
         this.rowEditExit = new core_1.EventEmitter();
+        this._rowHeight = 29;
         this._topRow = 0;
         this._leftPx = 0;
         /* tslint:disable:member-ordering */
@@ -687,10 +687,6 @@ __decorate([
     __metadata("design:type", Function)
 ], SlickGrid.prototype, "isCellEditValid", void 0);
 __decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], SlickGrid.prototype, "_rowHeight", void 0);
-__decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "loadFinished", void 0);
@@ -732,6 +728,11 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], SlickGrid.prototype, "onFocus", null);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], SlickGrid.prototype, "rowHeight", null);
 SlickGrid = SlickGrid_1 = __decorate([
     core_1.Component({
         selector: 'slick-grid',

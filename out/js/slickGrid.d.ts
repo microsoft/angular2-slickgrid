@@ -26,7 +26,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     isColumnEditable: (column: number) => boolean;
     isCellEditValid: (row: number, column: number, newValue: any) => boolean;
-    private _rowHeight;
     loadFinished: EventEmitter<void>;
     editingFinished: EventEmitter<any>;
     contextMenu: EventEmitter<any>;
@@ -52,6 +51,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     }>;
     onFocus(): void;
     rowHeight: number;
+    private _rowHeight;
     private _grid;
     private _gridColumns;
     private _columnNameToIndex;
