@@ -29,7 +29,7 @@ gulp.task('compile:src', () => {
 gulp.task('compile:examples', (done) => {
     let promises = [];
     promises.push(new Promise((resolve) => {
-        gulp.src(['examples/**/*.ts', 'typings/**/*.ts'])
+        gulp.src(['examples/**/*.ts', 'typings/**/*.ts', 'components/typings/**/*.ts'])
             .pipe(exmapProj())
             .pipe(gulp.dest('dist'))
             .on('end', () => {
