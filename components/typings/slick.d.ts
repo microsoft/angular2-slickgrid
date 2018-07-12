@@ -760,6 +760,10 @@ declare namespace Slick {
 		destroy(): void;
 
 		onSelectedRangesChanged: Slick.Event<E>;
+
+		getSelectedRanges?(): Array<Slick.Range>;
+
+		setSelectedRanges?(ranges: Array<Slick.Range>);
 	}
 
 	export class Grid<T extends SlickData> {
