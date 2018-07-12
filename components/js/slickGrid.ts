@@ -27,7 +27,6 @@ interface ISlickGridColumn {
     name: string;
     field: string;
     id: string;
-    icon: string;
     resizable: boolean;
     minWidth?: number;
     width?: number;
@@ -129,7 +128,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() contextColumns: string[] = [];
     @Input() columnsLoading: string[] = [];
     @Input() showHeader: boolean = true;
-    @Input() showDataTypeIcon: boolean = true;
     @Input() enableColumnReorder: boolean = false;
     @Input() enableAsyncPostRender: boolean = false;
     @Input() selectionModel: string | Slick.SelectionModel<any, any> = '';
@@ -409,8 +407,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             enableCellNavigation: true,
             enableColumnReorder: this.enableColumnReorder,
             renderRowWithRange: true,
-            showRowNumber: true,
-            showDataTypeIcon: this.showDataTypeIcon,
             showHeader: this.showHeader,
             rowHeight: this.rowHeight,
             defaultColumnWidth: 120,
@@ -536,9 +532,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     };
 
     private getFormatter = (column: any): any => {
-        if (column.isRowNumber === true) {
-            return undefined; // use default formatter for row number cell
-        }
         return (row, cell, value, columnDef, dataContext) => {
             let columnId = cell > 0 && this.columnDefinitions.length > cell - 1 ? this.columnDefinitions[cell - 1].id : undefined;
             if (columnId) {
@@ -673,7 +666,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                 name: c.name,
                 field: c.id,
                 id: c.id ? c.id : c.name,
-                icon: this.getImagePathForDataType(c.type),
                 resizable: true
             };
 
