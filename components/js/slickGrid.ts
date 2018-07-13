@@ -376,7 +376,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             enableAddRow: false, // TODO change when we support enableAddRow
             enableAsyncPostRender: this.enableAsyncPostRender,
             editorFactory: {
-                getEditor: this.getColumnEditor
+                getEditor: (column: ISlickColumn<any>) => this.getColumnEditor(column)
             },
             formatterFactory: {
                 getFormatter: this.getFormatter
