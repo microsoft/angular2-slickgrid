@@ -1,11 +1,10 @@
 import { OnChanges, OnInit, OnDestroy, SimpleChange, EventEmitter, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { IObservableCollection, IGridDataRow, IColumnDefinition } from './interfaces';
-import { ISlickRange } from './selectionModel';
+import { IObservableCollection, IGridDataRow, ISlickColumn } from './interfaces';
+export declare function getOverridableTextEditorClass(grid: SlickGrid): any;
 export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     private _el;
-    private _gridSyncService;
-    columnDefinitions: IColumnDefinition[];
+    columnDefinitions: ISlickColumn<any>[];
     dataRows: IObservableCollection<IGridDataRow>;
     resized: Observable<any>;
     highlightedCells: {
@@ -16,7 +15,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     contextColumns: string[];
     columnsLoading: string[];
     showHeader: boolean;
-    showDataTypeIcon: boolean;
     enableColumnReorder: boolean;
     enableAsyncPostRender: boolean;
     selectionModel: string | Slick.SelectionModel<any, any>;
@@ -24,7 +22,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     enableEditing: boolean;
     topRowNumber: number;
     overrideCellFn: (rowNumber, columnId, value?, data?) => string;
-    isColumnEditable: (column: number) => boolean;
     isCellEditValid: (row: number, column: number, newValue: any) => boolean;
     loadFinished: EventEmitter<void>;
     editingFinished: EventEmitter<any>;
@@ -59,10 +56,9 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private _resizeSubscription;
     private _gridSyncSubscription;
     private _topRow;
-    private _leftPx;
     private _activeEditingRow;
     private _activeEditingRowHasChanges;
-    constructor(_el: any, _gridSyncService: any);
+    constructor(_el: any);
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
     }): void;
@@ -74,10 +70,10 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     readonly onSelectedRowsChanged: Slick.Event<Slick.OnSelectedRowsChangedEventArgs<any>>;
     getSelectedRows(): number[];
     getColumnIndex(name: string): number;
-    getSelectedRanges(): ISlickRange[];
+    getSelectedRanges(): Slick.Range[];
     registerPlugin(plugin: Slick.Plugin<any> | string): void;
     setActive(): void;
-    selection: ISlickRange[] | boolean;
+    selection: Slick.Range[] | boolean;
     subscribeToContextMenu(): void;
     private initGrid();
     private changeEditSession(enabled);
@@ -85,15 +81,13 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private static getDataWithSchema(data, columns);
     private onResize();
     private invalidateRange(start, end);
-    private getColumnEditor;
+    private getColumnEditor(column);
     private getFormatter;
     private subscribeToScroll();
     private subscribeToCellChanged();
     private subscribeToBeforeEditCell();
     private subscribeToActiveCellChanged();
-    private updateColumnWidths();
     private updateSchema();
-    private getImagePathForDataType(type);
     private setCallbackOnDataRowsChanged();
     private renderGridDataRowsRange(startIndex, count);
 }

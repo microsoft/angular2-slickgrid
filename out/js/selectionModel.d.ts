@@ -4,13 +4,13 @@ export declare class SelectionModel implements ISlickSelectionModel {
     private _handler;
     private _onSelectedRangesChanged;
     private _slickRangeFactory;
-    constructor(_rowSelectionModel: ISlickSelectionModel, _handler: ISlickEventHandler, _onSelectedRangesChanged: ISlickEvent, _slickRangeFactory: (fromRow: number, fromCell: number, toRow: number, toCell: number) => ISlickRange);
-    readonly range: ISlickRange[];
+    constructor(_rowSelectionModel: ISlickSelectionModel, _handler: ISlickEventHandler, _onSelectedRangesChanged: ISlickEvent, _slickRangeFactory: (fromRow: number, fromCell: number, toRow: number, toCell: number) => Slick.Range);
+    readonly range: Slick.Range[];
     readonly onSelectedRangesChanged: ISlickEvent;
     init(grid: ISlickGrid): void;
     destroy(): void;
-    setSelectedRanges(ranges: ISlickRange[]): void;
-    getSelectedRanges(): ISlickRange[];
+    setSelectedRanges(ranges: Slick.Range[]): void;
+    getSelectedRanges(): Slick.Range[];
     changeSelectedRanges(selections: ISelectionRange[]): void;
     toggleSingleColumnSelection(columnId: string): void;
     setSingleColumnSelection(columnId: string): void;
@@ -27,26 +27,20 @@ export declare class SelectionModel implements ISlickSelectionModel {
     private updateSelectedRanges(ranges);
 }
 export interface ISlickSelectionModel {
-    range: ISlickRange[];
+    range: Slick.Range[];
     onSelectedRangesChanged: any;
     init(grid: any): void;
     destroy(): void;
-    setSelectedRanges(ranges: ISlickRange[]): void;
-    getSelectedRanges(): ISlickRange[];
+    setSelectedRanges(ranges: Slick.Range[]): void;
+    getSelectedRanges(): Slick.Range[];
 }
 export interface ISlickEventHandler {
     subscribe(event: any, handler: any): void;
     unsubscribeAll(): void;
 }
 export interface ISlickEvent {
-    notify(eventData: ISlickRange[]): void;
+    notify(eventData: Slick.Range[]): void;
     subscribe(handler: (e: any, args: any) => void): void;
-}
-export interface ISlickRange {
-    fromCell: number;
-    fromRow: number;
-    toCell: number;
-    toRow: number;
 }
 export interface ISlickGrid {
     getActiveCellNode(): any;
