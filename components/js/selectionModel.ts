@@ -9,9 +9,9 @@ export class SelectionModel implements ISlickSelectionModel {
     constructor(private _rowSelectionModel: ISlickSelectionModel,
                 private _handler: ISlickEventHandler,
                 private _onSelectedRangesChanged: ISlickEvent,
-                private _slickRangeFactory: (fromRow: number, fromCell: number, toRow: number, toCell: number) => ISlickRange) { }
+                private _slickRangeFactory: (fromRow: number, fromCell: number, toRow: number, toCell: number) => Slick.Range) { }
 
-    get range(): ISlickRange[] {
+    get range(): Slick.Range[] {
         return this._ranges;
     }
 
@@ -32,11 +32,11 @@ export class SelectionModel implements ISlickSelectionModel {
         this._rowSelectionModel.destroy();
     }
 
-    setSelectedRanges(ranges: ISlickRange[]): void {
+    setSelectedRanges(ranges: Slick.Range[]): void {
         this._rowSelectionModel.setSelectedRanges(ranges);
     }
 
-    getSelectedRanges(): ISlickRange[] {
+    getSelectedRanges(): Slick.Range[] {
         return this._rowSelectionModel.getSelectedRanges();
     }
 
@@ -121,10 +121,10 @@ export class SelectionModel implements ISlickSelectionModel {
     }
 
     private _grid: ISlickGrid;
-    private _ranges: ISlickRange[] = [];
+    private _ranges: Slick.Range[] = [];
     private _lastSelectedColumnIndexSequence: number[] = [];
 
-    private static areRangesIdentical(lhs: ISlickRange[], rhs: ISlickRange[]): boolean {
+    private static areRangesIdentical(lhs: Slick.Range[], rhs: Slick.Range[]): boolean {
         if (lhs && rhs && (lhs !== rhs) && lhs.length === rhs.length) {
             for (let i = 0; i < lhs.length; ++i) {
                 if (lhs[i].fromRow !== rhs[i].fromRow
@@ -139,12 +139,12 @@ export class SelectionModel implements ISlickSelectionModel {
         return false;
     }
 
-    private getColumnRange(columnId: string): ISlickRange {
+    private getColumnRange(columnId: string): Slick.Range {
         let columnIndex = this._grid.getColumnIndex(columnId);
         return this.getColumnRangeByIndex(columnIndex);
     }
 
-    private getColumnRangeByIndex(columnIndex: number): ISlickRange {
+    private getColumnRangeByIndex(columnIndex: number): Slick.Range {
         let rowCount = this._grid.getDataLength();
         let lastRowToSelect =  rowCount === 0 ? 0 : rowCount - 1 ;
         return this._slickRangeFactory(0, columnIndex, lastRowToSelect, columnIndex);
@@ -160,7 +160,7 @@ export class SelectionModel implements ISlickSelectionModel {
             }) === undefined;
     }
 
-    private updateSelectedRanges(ranges: ISlickRange[]): void {
+    private updateSelectedRanges(ranges: Slick.Range[]): void {
         // Set focus to this grid if it's not already somewhere inside it.
         if (ranges && ranges.length !== 0 && this._grid && this._grid.getCanvasNode() && !this._grid.getCanvasNode().contains(document.activeElement)) {
             this._grid.focus();
@@ -176,12 +176,12 @@ export class SelectionModel implements ISlickSelectionModel {
 }
 
 export interface ISlickSelectionModel {
-    range: ISlickRange[];
+    range: Slick.Range[];
     onSelectedRangesChanged: any;
     init(grid: any): void;
     destroy(): void;
-    setSelectedRanges(ranges: ISlickRange[]): void;
-    getSelectedRanges(): ISlickRange[];
+    setSelectedRanges(ranges: Slick.Range[]): void;
+    getSelectedRanges(): Slick.Range[];
 }
 
 export interface ISlickEventHandler {
@@ -190,15 +190,8 @@ export interface ISlickEventHandler {
 }
 
 export interface ISlickEvent {
-    notify(eventData: ISlickRange[]): void;
+    notify(eventData: Slick.Range[]): void;
     subscribe(handler: (e: any, args: any) => void): void;
-}
-
-export interface ISlickRange {
-    fromCell: number;
-    fromRow: number;
-    toCell: number;
-    toRow: number;
 }
 
 export interface ISlickGrid {

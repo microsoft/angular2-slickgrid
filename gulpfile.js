@@ -70,7 +70,7 @@ gulp.task('compile:examples', (done) => {
 gulp.task('compile', gulp.series('compile:src', 'compile:examples'));
 
 gulp.task('lint:src', () => {
-    return gulp.src(['components/**/*.ts'])
+    return gulp.src(['components/**/*.ts', '!components/typings/**/*'])
             .pipe((tslint({
                 formatter: "verbose"
             })))

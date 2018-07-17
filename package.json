@@ -24,7 +24,7 @@
     "moment": "^2.15.1",
     "reflect-metadata": "^0.1.8",
     "rxjs": "^5.4.0",
-    "slickgrid": "github:anthonydresser/SlickGrid#2.3.12",
+    "slickgrid": "github:anthonydresser/SlickGrid#2.3.24",
     "systemjs": "0.19.40",
     "underscore": "^1.8.3",
     "zone.js": "^0.8.4"
