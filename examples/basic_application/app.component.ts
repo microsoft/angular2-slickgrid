@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IObservableCollection, IGridDataRow, IColumnDefinition, FieldType,
+import { IObservableCollection, IGridDataRow,
     VirtualizedCollection } from './../../out/index';
 
 const numberOfColumns = 10;
@@ -14,18 +14,17 @@ const numberOfRows = 200;
 })
 export class AppComponent implements OnInit {
     private dataRows: IObservableCollection<IGridDataRow>;
-    private columnDefinitions: IColumnDefinition[];
+    private columnDefinitions: Slick.Column<any>[];
     // tslint:disable-next-line:no-unused-variable
     private selectionModel = 'CellSelectionModel';
 
     ngOnInit(): void {
         // generate columns
-        let columns: IColumnDefinition[] = [];
+        let columns: Slick.Column<any>[] = [];
         for (let i = 0; i < numberOfColumns; i++) {
             columns.push({
                 id: i.toString(),
-                name: i.toString(),
-                type: this.randomType()
+                name: i.toString()
             });
         }
         let loadDataFunction = (offset: number, count: number): Promise<IGridDataRow[]> => {
@@ -50,12 +49,5 @@ export class AppComponent implements OnInit {
                                                                     return { values: []};
                                                                 });
         this.columnDefinitions = columns;
-    }
-
-    private randomType(): FieldType {
-        let types = [FieldType.Boolean, FieldType.Date, FieldType.Decimal, FieldType.Integer,
-                    FieldType.String];
-        let rand = Math.floor(Math.random() * (types.length - 0 + 1));
-        return types[rand];
     }
 }

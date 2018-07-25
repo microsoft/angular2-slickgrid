@@ -27,7 +27,6 @@ interface ISlickGridData {
 export function getOverridableTextEditorClass(grid: SlickGrid): any {
     class OverridableTextEditor {
         private _textEditor: any;
-        private _rowIndex: number;
 
         constructor(private _args: any) {
             this._textEditor = new Slick.Editors.Text(_args);
@@ -56,8 +55,6 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
                     item[this._args.column.id] = overrideValue;
                 }
             }
-
-            this._rowIndex = rowNumber;
             this._textEditor.loadValue(item);
         };
 
@@ -66,12 +63,13 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
         };
 
         applyValue(item, state): void {
-            let currentRow = grid.dataRows.at(this._rowIndex);
+            let activeRow = grid.activeCell.row;
+            let currentRow = grid.dataRows.at(activeRow);
             let colIndex = grid.getColumnIndex(this._args.column.name);
             let dataLength: number = grid.dataRows.getLength();
 
             // If this is not the "new row" at the very bottom
-            if (this._rowIndex !== dataLength) {
+            if (activeRow !== dataLength) {
                 currentRow.values[colIndex] = state;
                 this._textEditor.applyValue(item, state);
             }
@@ -82,12 +80,13 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
         };
 
         validate(): any {
+            let activeRow = grid.activeCell.row;
             let result: any = { valid: true, msg: undefined };
             let colIndex: number = grid.getColumnIndex(this._args.column.name);
             let newValue: any = this._textEditor.getValue();
 
             // TODO: It would be nice if we could support the isCellEditValid as a promise 
-            if (grid.isCellEditValid && !grid.isCellEditValid(this._rowIndex, colIndex, newValue)) {
+            if (grid.isCellEditValid && !grid.isCellEditValid(activeRow, colIndex, newValue)) {
                 result.valid = false;
             }
 
@@ -610,12 +609,16 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+    public get activeCell(): Slick.Cell {
+        return this._grid.getActiveCell();
+    }
+
     private renderGridDataRowsRange(startIndex: number, count: number): void {
         let editor = this._grid.getCellEditor();
         let oldValue = editor ? editor.getValue() : undefined;
         let wasValueChanged = editor ? editor.isValueChanged() : false;
         this.invalidateRange(startIndex, startIndex + count);
-        let activeCell = this._grid.getActiveCell();
+        let activeCell = this.activeCell;
         if (editor && activeCell.row >= startIndex && activeCell.row < startIndex + count) {
             if (oldValue && wasValueChanged) {
                 editor.setValue(oldValue);
