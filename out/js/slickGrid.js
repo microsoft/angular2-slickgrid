@@ -48,7 +48,6 @@ function getOverridableTextEditorClass(grid) {
                     item[this._args.column.id] = overrideValue;
                 }
             }
-            this._rowIndex = rowNumber;
             this._textEditor.loadValue(item);
         }
         ;
@@ -57,11 +56,12 @@ function getOverridableTextEditorClass(grid) {
         }
         ;
         applyValue(item, state) {
-            let currentRow = grid.dataRows.at(this._rowIndex);
+            let activeRow = grid.activeCell.row;
+            let currentRow = grid.dataRows.at(activeRow);
             let colIndex = grid.getColumnIndex(this._args.column.name);
             let dataLength = grid.dataRows.getLength();
             // If this is not the "new row" at the very bottom
-            if (this._rowIndex !== dataLength) {
+            if (activeRow !== dataLength) {
                 currentRow.values[colIndex] = state;
                 this._textEditor.applyValue(item, state);
             }
@@ -72,11 +72,12 @@ function getOverridableTextEditorClass(grid) {
         }
         ;
         validate() {
+            let activeRow = grid.activeCell.row;
             let result = { valid: true, msg: undefined };
             let colIndex = grid.getColumnIndex(this._args.column.name);
             let newValue = this._textEditor.getValue();
             // TODO: It would be nice if we could support the isCellEditValid as a promise 
-            if (grid.isCellEditValid && !grid.isCellEditValid(this._rowIndex, colIndex, newValue)) {
+            if (grid.isCellEditValid && !grid.isCellEditValid(activeRow, colIndex, newValue)) {
                 result.valid = false;
             }
             return result;
@@ -510,12 +511,15 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             });
         }
     }
+    get activeCell() {
+        return this._grid.getActiveCell();
+    }
     renderGridDataRowsRange(startIndex, count) {
         let editor = this._grid.getCellEditor();
         let oldValue = editor ? editor.getValue() : undefined;
         let wasValueChanged = editor ? editor.isValueChanged() : false;
         this.invalidateRange(startIndex, startIndex + count);
-        let activeCell = this._grid.getActiveCell();
+        let activeCell = this.activeCell;
         if (editor && activeCell.row >= startIndex && activeCell.row < startIndex + count) {
             if (oldValue && wasValueChanged) {
                 editor.setValue(oldValue);

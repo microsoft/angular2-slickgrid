@@ -89,5 +89,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private subscribeToActiveCellChanged();
     private updateSchema();
     private setCallbackOnDataRowsChanged();
+    readonly activeCell: Slick.Cell;
     private renderGridDataRowsRange(startIndex, count);
 }
