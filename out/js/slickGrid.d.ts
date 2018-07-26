@@ -24,28 +24,11 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     isCellEditValid: (row: number, column: number, newValue: any) => boolean;
     loadFinished: EventEmitter<void>;
-    editingFinished: EventEmitter<any>;
-    contextMenu: EventEmitter<any>;
-    topRowNumberChange: EventEmitter<number>;
-    activeCellChanged: EventEmitter<{
-        row: number;
-        column: number;
-    }>;
-    cellEditBegin: EventEmitter<{
-        row: number;
-        column: number;
-    }>;
-    cellEditExit: EventEmitter<{
-        row: number;
-        column: number;
-        newValue: any;
-    }>;
-    rowEditBegin: EventEmitter<{
-        row: number;
-    }>;
-    rowEditExit: EventEmitter<{
-        row: number;
-    }>;
+    onContextMenu: EventEmitter<Slick.OnContextMenuEventArgs<any>>;
+    onScroll: EventEmitter<Slick.OnScrollEventArgs<any>>;
+    onActiveCellChanged: EventEmitter<Slick.OnActiveCellChangedEventArgs<any>>;
+    onBeforeEditCell: EventEmitter<Slick.OnBeforeEditCellEventArgs<any>>;
+    onCellChange: EventEmitter<Slick.OnCellChangeEventArgs<any>>;
     onFocus(): void;
     rowHeight: number;
     private _rowHeight;
@@ -55,9 +38,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     private _gridData;
     private _resizeSubscription;
     private _gridSyncSubscription;
-    private _topRow;
-    private _activeEditingRow;
-    private _activeEditingRowHasChanges;
     constructor(_el: any);
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
@@ -74,19 +54,14 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     registerPlugin(plugin: Slick.Plugin<any> | string): void;
     setActive(): void;
     selection: Slick.Range[] | boolean;
-    subscribeToContextMenu(): void;
     private initGrid();
     private changeEditSession(enabled);
-    private handleEditorCellChange(rowNumber);
     private static getDataWithSchema(data, columns);
     private onResize();
     private invalidateRange(start, end);
     private getColumnEditor(column);
     private getFormatter;
-    private subscribeToScroll();
-    private subscribeToCellChanged();
-    private subscribeToBeforeEditCell();
-    private subscribeToActiveCellChanged();
+    private setupEvents();
     private updateSchema();
     private setCallbackOnDataRowsChanged();
     readonly activeCell: Slick.Cell;
