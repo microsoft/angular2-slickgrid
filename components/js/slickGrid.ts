@@ -120,6 +120,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Input() plugins: Array<string | Slick.Plugin<any>> = [];
     @Input() enableEditing: boolean = false;
     @Input() topRowNumber: number;
+    @Input() options: Slick.GridOptions<any>;
 
     @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     @Input() isCellEditValid: (row: number, column: number, newValue: any) => boolean;
@@ -167,7 +168,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                 return this.dataRows && this._gridColumns ? this.dataRows.getLength() : 0;
             },
             getItem: (index): any => {
-                return SlickGrid.getDataWithSchema(this.dataRows.at(index), this._gridColumns);
+                return this.dataRows ? SlickGrid.getDataWithSchema(this.dataRows.at(index), this._gridColumns) : undefined;
             },
             getRange: (start, end): any => {
                 return !this.dataRows ? undefined : this.dataRows.getRange(start, end).map(d => {
@@ -362,6 +363,12 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             }
         };
 
+        for (let key in this.options) {
+            if (this.options.hasOwnProperty(key)) {
+                options[key] = this.options[key];
+            }
+        }
+
         this._grid = new Slick.Grid(
             this._el.nativeElement.getElementsByClassName('grid')[0],
             this._gridData,
@@ -401,12 +408,14 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     }
 
     private static getDataWithSchema(data: IGridDataRow, columns: Slick.Column<any>[]): any {
-        let dataWithSchema = {};
-        for (let i = 0; i < columns.length; i++) {
-            dataWithSchema[columns[i].field] = data.values[i];
-        }
+        if (data) {
+            let dataWithSchema = {};
+            for (let i = 0; i < columns.length; i++) {
+                dataWithSchema[columns[i].field] = data.values[i];
+            }
 
-        return dataWithSchema;
+            return dataWithSchema;
+        }
     }
 
     private onResize(): void {
