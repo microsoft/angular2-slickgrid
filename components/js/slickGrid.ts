@@ -66,13 +66,8 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
             let activeRow = grid.activeCell.row;
             let currentRow = grid.dataRows.at(activeRow);
             let colIndex = grid.getColumnIndex(this._args.column.name);
-            let dataLength: number = grid.dataRows.getLength();
-
-            // If this is not the "new row" at the very bottom
-            if (activeRow !== dataLength) {
-                currentRow.values[colIndex] = state;
-                this._textEditor.applyValue(item, state);
-            }
+            currentRow.values[colIndex] = state;
+            this._textEditor.applyValue(item, state);
         };
 
         isValueChanged(): boolean {
@@ -133,6 +128,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Output() onActiveCellChanged: EventEmitter<Slick.OnActiveCellChangedEventArgs<any>> = new EventEmitter<Slick.OnActiveCellChangedEventArgs<any>>();
     @Output() onBeforeEditCell: EventEmitter<Slick.OnBeforeEditCellEventArgs<any>> = new EventEmitter<Slick.OnBeforeEditCellEventArgs<any>>();
     @Output() onCellChange: EventEmitter<Slick.OnCellChangeEventArgs<any>> = new EventEmitter<Slick.OnCellChangeEventArgs<any>>();
+    @Output() onAddNewRow: EventEmitter<Slick.OnAddNewRowEventArgs<any>> = new EventEmitter<Slick.OnAddNewRowEventArgs<any>>();
 
     @HostListener('focus')
     onFocus(): void {
@@ -403,7 +399,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         this.enableEditing = enabled;
         let options: any = this._grid.getOptions();
         options.editable = enabled;
-        options.enableAddRow = false; // TODO change to " options.enableAddRow = false;" when we support enableAddRow
         this._grid.setOptions(options);
     }
 
@@ -512,6 +507,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         });
         this._grid.onContextMenu.subscribe((e, args) => {
             this.onContextMenu.emit(args);
+        });
+        this._grid.onAddNewRow.subscribe((e, args) => {
+            this.onAddNewRow.emit(args);
         });
     }
 
