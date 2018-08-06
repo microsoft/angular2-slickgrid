@@ -88,7 +88,7 @@ function getOverridableTextEditorClass(grid) {
 }
 exports.getOverridableTextEditorClass = getOverridableTextEditorClass;
 ////////// Implementation /////////////////////////////////////////////////////
-let SlickGrid = SlickGrid_1 = class SlickGrid {
+let SlickGrid = class SlickGrid {
     ////////// Constructor and Angular functions //////////////////////////////
     constructor(_el) {
         this._el = _el;
@@ -154,12 +154,10 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                 return this.dataRows && this._gridColumns ? this.dataRows.getLength() : 0;
             },
             getItem: (index) => {
-                return SlickGrid_1.getDataWithSchema(this.dataRows.at(index), this._gridColumns);
+                return this.dataRows.at(index);
             },
             getRange: (start, end) => {
-                return !this.dataRows ? undefined : this.dataRows.getRange(start, end).map(d => {
-                    return SlickGrid_1.getDataWithSchema(d, this._gridColumns);
-                });
+                return !this.dataRows ? undefined : this.dataRows.getRange(start, end);
             },
             getItemMetadata: undefined
         };
@@ -375,13 +373,6 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
         options.enableAddRow = false; // TODO change to " options.enableAddRow = false;" when we support enableAddRow
         this._grid.setOptions(options);
     }
-    static getDataWithSchema(data, columns) {
-        let dataWithSchema = {};
-        for (let i = 0; i < columns.length; i++) {
-            dataWithSchema[columns[i].field] = data.values[i];
-        }
-        return dataWithSchema;
-    }
     onResize() {
         if (this._grid !== undefined) {
             // this will make sure the grid header and body to be re-rendered
@@ -557,7 +548,7 @@ __decorate([
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], SlickGrid.prototype, "rowHeight", null);
-SlickGrid = SlickGrid_1 = __decorate([
+SlickGrid = __decorate([
     core_1.Component({
         selector: 'slick-grid',
         template: '<div class="grid" (window:resize)="onResize()"></div>',
@@ -567,6 +558,5 @@ SlickGrid = SlickGrid_1 = __decorate([
     __metadata("design:paramtypes", [Object])
 ], SlickGrid);
 exports.SlickGrid = SlickGrid;
-var SlickGrid_1;
 
 //# sourceMappingURL=slickGrid.js.map

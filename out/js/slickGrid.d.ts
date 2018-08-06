@@ -56,7 +56,6 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     selection: Slick.Range[] | boolean;
     private initGrid();
     private changeEditSession(enabled);
-    private static getDataWithSchema(data, columns);
     private onResize();
     private invalidateRange(start, end);
     private getColumnEditor(column);
