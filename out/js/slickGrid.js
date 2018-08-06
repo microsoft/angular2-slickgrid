@@ -154,7 +154,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
                 return this.dataRows && this._gridColumns ? this.dataRows.getLength() : 0;
             },
             getItem: (index) => {
-                return SlickGrid_1.getDataWithSchema(this.dataRows.at(index), this._gridColumns);
+                return !this.dataRows ? undefined : SlickGrid_1.getDataWithSchema(this.dataRows.at(index), this._gridColumns);
             },
             getRange: (start, end) => {
                 return !this.dataRows ? undefined : this.dataRows.getRange(start, end).map(d => {
