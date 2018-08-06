@@ -167,7 +167,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                 return this.dataRows && this._gridColumns ? this.dataRows.getLength() : 0;
             },
             getItem: (index): any => {
-                return SlickGrid.getDataWithSchema(this.dataRows.at(index), this._gridColumns);
+                return !this.dataRows ? undefined : SlickGrid.getDataWithSchema(this.dataRows.at(index), this._gridColumns);
             },
             getRange: (start, end): any => {
                 return !this.dataRows ? undefined : this.dataRows.getRange(start, end).map(d => {
