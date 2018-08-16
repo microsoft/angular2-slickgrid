@@ -127,7 +127,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
 
     // SLickGrid Events
-    @Output() onContextMenu: EventEmitter<Slick.OnContextMenuEventArgs<any>> = new EventEmitter<Slick.OnContextMenuEventArgs<any>>();
+    @Output() onContextMenu: EventEmitter<Slick.EventData> = new EventEmitter<Slick.EventData>();
     @Output() onScroll: EventEmitter<Slick.OnScrollEventArgs<any>> = new EventEmitter<Slick.OnScrollEventArgs<any>>();
     @Output() onActiveCellChanged: EventEmitter<Slick.OnActiveCellChangedEventArgs<any>> = new EventEmitter<Slick.OnActiveCellChangedEventArgs<any>>();
     @Output() onBeforeEditCell: EventEmitter<Slick.OnBeforeEditCellEventArgs<any>> = new EventEmitter<Slick.OnBeforeEditCellEventArgs<any>>();
@@ -502,7 +502,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             this.onActiveCellChanged.emit(args);
         });
         this._grid.onContextMenu.subscribe((e, args) => {
-            this.onContextMenu.emit(args);
+            this.onContextMenu.emit(e);
         });
     }
 
