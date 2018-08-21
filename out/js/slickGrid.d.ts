@@ -24,7 +24,7 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     isCellEditValid: (row: number, column: number, newValue: any) => boolean;
     loadFinished: EventEmitter<void>;
-    onContextMenu: EventEmitter<Slick.OnContextMenuEventArgs<any>>;
+    onContextMenu: EventEmitter<Slick.EventData>;
     onScroll: EventEmitter<Slick.OnScrollEventArgs<any>>;
     onActiveCellChanged: EventEmitter<Slick.OnActiveCellChangedEventArgs<any>>;
     onBeforeEditCell: EventEmitter<Slick.OnBeforeEditCellEventArgs<any>>;

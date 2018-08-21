@@ -413,7 +413,7 @@ let SlickGrid = class SlickGrid {
             this.onActiveCellChanged.emit(args);
         });
         this._grid.onContextMenu.subscribe((e, args) => {
-            this.onContextMenu.emit(args);
+            this.onContextMenu.emit(e);
         });
     }
     updateSchema() {
