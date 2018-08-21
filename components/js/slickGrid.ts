@@ -8,7 +8,7 @@ import {
     ViewEncapsulation, HostListener, AfterViewInit
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs/Rx';
-import { IObservableCollection, CollectionChange, IGridDataRow, ISlickColumn } from './interfaces';
+import { IObservableCollection, CollectionChange, ISlickColumn } from './interfaces';
 
 declare let Slick;
 
@@ -70,7 +70,7 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
 
             // If this is not the "new row" at the very bottom
             if (activeRow !== dataLength) {
-                currentRow.values[colIndex] = state;
+                currentRow[colIndex] = state;
                 this._textEditor.applyValue(item, state);
             }
         };
@@ -107,7 +107,7 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
 export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     @Input() columnDefinitions: ISlickColumn<any>[];
-    @Input() dataRows: IObservableCollection<IGridDataRow>;
+    @Input() dataRows: IObservableCollection<{}>;
     @Input() resized: Observable<any>;
     @Input() highlightedCells: { row: number, column: number }[] = [];
     @Input() blurredColumns: string[] = [];
