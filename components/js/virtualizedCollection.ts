@@ -166,7 +166,7 @@ export class VirtualizedCollection<TData> implements IObservableCollection<TData
         return this._placeHolderGenerator(index);
     }
 
-    private resetWindowsAroundIndex(index: number): void {
+    resetWindowsAroundIndex(index: number): void {
 
         let bufferWindowBeforeStart = Math.max(0, index - this._windowSize * 1.5);
         let bufferWindowBeforeEnd = Math.max(0, index - this._windowSize / 2);
