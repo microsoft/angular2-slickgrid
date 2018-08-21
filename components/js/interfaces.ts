@@ -52,11 +52,6 @@ export interface IGridColumnDefinition {
     type: number;
 }
 
-export interface IGridDataRow {
-    row?: number;
-    values: any[];
-}
-
 export interface ISlickColumn<T> extends Slick.Column<T> {
     isEditable?: boolean;
 }
