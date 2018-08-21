@@ -62,7 +62,7 @@ function getOverridableTextEditorClass(grid) {
             let dataLength = grid.dataRows.getLength();
             // If this is not the "new row" at the very bottom
             if (activeRow !== dataLength) {
-                currentRow.values[colIndex] = state;
+                currentRow[colIndex] = state;
                 this._textEditor.applyValue(item, state);
             }
         }

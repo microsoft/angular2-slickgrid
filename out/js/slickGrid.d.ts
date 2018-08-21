@@ -1,11 +1,11 @@
 import { OnChanges, OnInit, OnDestroy, SimpleChange, EventEmitter, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { IObservableCollection, IGridDataRow, ISlickColumn } from './interfaces';
+import { IObservableCollection, ISlickColumn } from './interfaces';
 export declare function getOverridableTextEditorClass(grid: SlickGrid): any;
 export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     private _el;
     columnDefinitions: ISlickColumn<any>[];
-    dataRows: IObservableCollection<IGridDataRow>;
+    dataRows: IObservableCollection<{}>;
     resized: Observable<any>;
     highlightedCells: {
         row: number;
