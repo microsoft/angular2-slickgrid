@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IObservableCollection, IGridDataRow,
+import { IObservableCollection,
     VirtualizedCollection } from './../../out/index';
 
 const numberOfColumns = 10;
@@ -13,7 +13,7 @@ const numberOfRows = 200;
                </slick-grid>`
 })
 export class AppComponent implements OnInit {
-    private dataRows: IObservableCollection<IGridDataRow>;
+    private dataRows: IObservableCollection<{}>;
     private columnDefinitions: Slick.Column<any>[];
     // tslint:disable-next-line:no-unused-variable
     private selectionModel = 'CellSelectionModel';
@@ -27,22 +27,20 @@ export class AppComponent implements OnInit {
                 name: i.toString()
             });
         }
-        let loadDataFunction = (offset: number, count: number): Promise<IGridDataRow[]> => {
-            return new Promise<IGridDataRow[]>((resolve) => {
-                let data: IGridDataRow[] = [];
+        let loadDataFunction = (offset: number, count: number): Promise<{}[]> => {
+            return new Promise<{}[]>((resolve) => {
+                let data: {}[] = [];
                 for (let i = offset; i < offset + count; i++) {
-                    let row: IGridDataRow = {
-                        values: []
-                    };
+                    let row = {};
                     for (let j = 0; j < numberOfColumns; j++) {
-                        row.values.push(`column ${j}; row ${i}`);
+                        row[j.toString()] = `column ${j}; row ${i}`;
                     }
                     data.push(row);
                 }
                 resolve(data);
             });
         };
-        this.dataRows = new VirtualizedCollection<IGridDataRow>(50,
+        this.dataRows = new VirtualizedCollection<{}>(50,
                                                                 numberOfRows,
                                                                 loadDataFunction,
                                                                 (index) => {
