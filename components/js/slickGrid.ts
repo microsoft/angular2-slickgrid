@@ -27,9 +27,16 @@ interface ISlickGridData {
 export function getOverridableTextEditorClass(grid: SlickGrid): any {
     class OverridableTextEditor {
         private _textEditor: any;
+        public keyCaptureList: number[];
 
         constructor(private _args: any) {
-            this._textEditor = new Slick.Editors.Text(_args);
+            this._textEditor = new Slick.Editors.Text(_args);            
+            const END = 35;
+            const HOME = 36;
+
+            // These are the special keys the text editor should capture instead of letting 
+            // the grid handle them
+            this.keyCaptureList = [END, HOME];
         }
 
         destroy(): void {
