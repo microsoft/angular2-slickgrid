@@ -30,7 +30,7 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
         public keyCaptureList: number[];
 
         constructor(private _args: any) {
-            this._textEditor = new Slick.Editors.Text(_args);            
+            this._textEditor = new Slick.Editors.Text(_args);
             const END = 35;
             const HOME = 36;
 
@@ -130,6 +130,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     @Input() isCellEditValid: (row: number, column: number, newValue: any) => boolean;
+    @Input() getAdditionalCssClassesForCell: (row: number, column: number) => string;
 
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
 
@@ -499,6 +500,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         });
         this._grid.onContextMenu.subscribe((e, args) => {
             this.onContextMenu.emit(e);
+        });
+        this._grid.onBeforeAppendCell.subscribe((e, args) => {
+            return this.getAdditionalCssClassesForCell ? this.getAdditionalCssClassesForCell(args.row, args.cell) : undefined;
         });
     }
 
