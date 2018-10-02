@@ -130,7 +130,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
 
     @Input() overrideCellFn: (rowNumber, columnId, value?, data?) => string;
     @Input() isCellEditValid: (row: number, column: number, newValue: any) => boolean;
-    @Input() getAdditionalCssClassesForCell: (row: number, column: number) => string;
+    @Input() onBeforeAppendCell: (row: number, column: number) => string;
 
     @Output() loadFinished: EventEmitter<void> = new EventEmitter<void>();
 
@@ -502,7 +502,8 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             this.onContextMenu.emit(e);
         });
         this._grid.onBeforeAppendCell.subscribe((e, args) => {
-            return this.getAdditionalCssClassesForCell ? this.getAdditionalCssClassesForCell(args.row, args.cell) : undefined;
+            // Since we need to return a string here, we are using calling a function instead of event emitter like other events handlers
+            return this.onBeforeAppendCell ? this.onBeforeAppendCell(args.row, args.cell) : undefined;
         });
     }
 
