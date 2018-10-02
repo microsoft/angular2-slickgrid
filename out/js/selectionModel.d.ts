@@ -20,11 +20,11 @@ export declare class SelectionModel implements ISlickSelectionModel {
     private _grid;
     private _ranges;
     private _lastSelectedColumnIndexSequence;
-    private static areRangesIdentical(lhs, rhs);
-    private getColumnRange(columnId);
-    private getColumnRangeByIndex(columnIndex);
+    private static areRangesIdentical;
+    private getColumnRange;
+    private getColumnRangeByIndex;
     private readonly isColumnSelectionCurrently;
-    private updateSelectedRanges(ranges);
+    private updateSelectedRanges;
 }
 export interface ISlickSelectionModel {
     range: Slick.Range[];

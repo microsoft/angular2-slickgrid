@@ -24,6 +24,11 @@ function getOverridableTextEditorClass(grid) {
         constructor(_args) {
             this._args = _args;
             this._textEditor = new Slick.Editors.Text(_args);
+            const END = 35;
+            const HOME = 36;
+            // These are the special keys the text editor should capture instead of letting 
+            // the grid handle them
+            this.keyCaptureList = [END, HOME];
         }
         destroy() {
             this._textEditor.destroy();
@@ -415,6 +420,10 @@ let SlickGrid = class SlickGrid {
         this._grid.onContextMenu.subscribe((e, args) => {
             this.onContextMenu.emit(e);
         });
+        this._grid.onBeforeAppendCell.subscribe((e, args) => {
+            // Since we need to return a string here, we are using calling a function instead of event emitter like other events handlers
+            return this.onBeforeAppendCell ? this.onBeforeAppendCell(args.row, args.cell) : undefined;
+        });
     }
     updateSchema() {
         if (!this.columnDefinitions) {
@@ -513,6 +522,10 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", Function)
 ], SlickGrid.prototype, "isCellEditValid", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Function)
+], SlickGrid.prototype, "onBeforeAppendCell", void 0);
 __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)

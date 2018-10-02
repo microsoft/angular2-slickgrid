@@ -12,7 +12,7 @@ export declare class VirtualizedCollection<TData> implements IObservableCollecti
     getLength(): number;
     at(index: number): TData;
     getRange(start: number, end: number): TData[];
-    private getRangeFromCurrent(start, end);
-    private getDataFromCurrent(index);
+    private getRangeFromCurrent;
+    private getDataFromCurrent;
     resetWindowsAroundIndex(index: number): void;
 }

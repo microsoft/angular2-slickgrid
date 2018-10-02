@@ -21,8 +21,9 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     plugins: Array<string | Slick.Plugin<any>>;
     enableEditing: boolean;
     topRowNumber: number;
-    overrideCellFn: (rowNumber, columnId, value?, data?) => string;
+    overrideCellFn: (rowNumber: any, columnId: any, value?: any, data?: any) => string;
     isCellEditValid: (row: number, column: number, newValue: any) => boolean;
+    onBeforeAppendCell: (row: number, column: number) => string;
     loadFinished: EventEmitter<void>;
     onContextMenu: EventEmitter<Slick.EventData>;
     onScroll: EventEmitter<Slick.OnScrollEventArgs<any>>;
@@ -54,15 +55,15 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     registerPlugin(plugin: Slick.Plugin<any> | string): void;
     setActive(): void;
     selection: Slick.Range[] | boolean;
-    private initGrid();
-    private changeEditSession(enabled);
-    private onResize();
-    private invalidateRange(start, end);
-    private getColumnEditor(column);
+    private initGrid;
+    private changeEditSession;
+    private onResize;
+    private invalidateRange;
+    private getColumnEditor;
     private getFormatter;
-    private setupEvents();
-    private updateSchema();
-    private setCallbackOnDataRowsChanged();
+    private setupEvents;
+    private updateSchema;
+    private setCallbackOnDataRowsChanged;
     readonly activeCell: Slick.Cell;
-    private renderGridDataRowsRange(startIndex, count);
+    private renderGridDataRowsRange;
 }
