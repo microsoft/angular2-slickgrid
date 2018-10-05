@@ -145,7 +145,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Output() onActiveCellChanged: EventEmitter<Slick.OnActiveCellChangedEventArgs<any>> = new EventEmitter<Slick.OnActiveCellChangedEventArgs<any>>();
     @Output() onBeforeEditCell: EventEmitter<Slick.OnBeforeEditCellEventArgs<any>> = new EventEmitter<Slick.OnBeforeEditCellEventArgs<any>>();
     @Output() onCellChange: EventEmitter<Slick.OnCellChangeEventArgs<any>> = new EventEmitter<Slick.OnCellChangeEventArgs<any>>();
-    @Output() onRangeRenderCompleted: EventEmitter<OnRangeRenderCompletedEventArgs> = new EventEmitter<OnRenderCompletedEventArgs>();
+    @Output() onRangeRenderCompleted: EventEmitter<OnRangeRenderCompletedEventArgs> = new EventEmitter<OnRangeRenderCompletedEventArgs>();
 
     @HostListener('focus')
     onFocus(): void {
@@ -539,7 +539,16 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     }
 
     private renderGridDataRowsRange(startIndex: number, count: number): void {
+        let editor = this._grid.getCellEditor();
+        let oldValue = editor ? editor.getValue() : undefined;
+        let wasValueChanged = editor ? editor.isValueChanged() : false;
         this.invalidateRange(startIndex, startIndex + count);
+        let activeCell = this.activeCell;
+        if (editor && activeCell.row >= startIndex && activeCell.row < startIndex + count) {
+            if (oldValue && wasValueChanged) {
+                editor.setValue(oldValue);
+            }
+        }
         this.onRangeRenderCompleted.emit({ startRow: startIndex, endRow: startIndex + count });
     }
 
