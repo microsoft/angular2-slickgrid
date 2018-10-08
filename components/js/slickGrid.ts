@@ -145,7 +145,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     @Output() onActiveCellChanged: EventEmitter<Slick.OnActiveCellChangedEventArgs<any>> = new EventEmitter<Slick.OnActiveCellChangedEventArgs<any>>();
     @Output() onBeforeEditCell: EventEmitter<Slick.OnBeforeEditCellEventArgs<any>> = new EventEmitter<Slick.OnBeforeEditCellEventArgs<any>>();
     @Output() onCellChange: EventEmitter<Slick.OnCellChangeEventArgs<any>> = new EventEmitter<Slick.OnCellChangeEventArgs<any>>();
-    @Output() onRangeRenderCompleted: EventEmitter<OnRangeRenderCompletedEventArgs> = new EventEmitter<OnRangeRenderCompletedEventArgs>();
+    @Output() onRendered: EventEmitter<Slick.OnRenderedEventArgs<any>> = new EventEmitter<Slick.OnRenderedEventArgs<any>>();
 
     @HostListener('focus')
     onFocus(): void {
@@ -511,6 +511,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             // Since we need to return a string here, we are using calling a function instead of event emitter like other events handlers
             return this.onBeforeAppendCell ? this.onBeforeAppendCell(args.row, args.cell) : undefined;
         });
+        this._grid.onRendered.subscribe((e, args) => {
+            this.onRendered.emit(args);
+        });
     }
 
     private updateSchema(): void {
@@ -549,7 +552,6 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
                 editor.setValue(oldValue);
             }
         }
-        this.onRangeRenderCompleted.emit({ startRow: startIndex, endRow: startIndex + count });
     }
 
     /* andresse: commented out 11/1/2016 due to minification issues
