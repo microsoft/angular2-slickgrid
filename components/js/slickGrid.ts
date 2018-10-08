@@ -22,11 +22,6 @@ interface ISlickGridData {
     getItemMetadata(index: number): any;
 }
 
-export class OnRangeRenderCompletedEventArgs {
-    startRow: number;
-    endRow: number;
-}
-
 ////////// Text Editors ///////////////////////////////////////////////////////
 
 export function getOverridableTextEditorClass(grid: SlickGrid): any {
