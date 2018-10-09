@@ -1203,7 +1203,8 @@ declare namespace Slick {
 		public onSelectedRowsChanged: Slick.Event<OnSelectedRowsChangedEventArgs<T>>;
 		public onCellCssStylesChanged: Slick.Event<OnCellCssStylesChangedEventArgs<T>>;
 		public onViewportChanged: Slick.Event<OnViewportChangedEventArgs<T>>;
-		public onBeforeAppendCell:Slick.Event<OnBeforeAppendCellEventArgs<T>>
+		public onBeforeAppendCell: Slick.Event<OnBeforeAppendCellEventArgs<T>>;
+		public onRendered: Slick.Event<OnRenderedEventArgs<T>>;
 		// #endregion Events
 
 		// #region Plugins
@@ -1405,12 +1406,17 @@ declare namespace Slick {
 	export interface OnViewportChangedEventArgs<T extends SlickData> extends GridEventArgs<T> {
 
 	}
-	
-	export interface OnBeforeAppendCellEventArgs<T extends SlickData> extends GridEventArgs<T>{
+
+	export interface OnBeforeAppendCellEventArgs<T extends SlickData> extends GridEventArgs<T> {
 		row: number;
 		cell: number;
 		value: any;
 		dataContext: any;
+	}
+
+	export interface OnRenderedEventArgs<T extends SlickData> extends GridEventArgs<T> {
+		startRow: number;
+		endRow: number;
 	}
 
 	export interface SortColumn<T extends SlickData> {
@@ -1536,7 +1542,7 @@ declare namespace Slick {
 	}
 
 	export interface Formatter<T extends SlickData> {
-        (row: number, cell: number, value: any, columnDef: Column<T>, dataContext: SlickData): string;
+		(row: number, cell: number, value: any, columnDef: Column<T>, dataContext: SlickData): string;
 	}
 
 	export module Formatters {
