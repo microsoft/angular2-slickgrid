@@ -114,6 +114,7 @@ let SlickGrid = class SlickGrid {
         this.onActiveCellChanged = new core_1.EventEmitter();
         this.onBeforeEditCell = new core_1.EventEmitter();
         this.onCellChange = new core_1.EventEmitter();
+        this.onRendered = new core_1.EventEmitter();
         this._rowHeight = 29;
         this.getFormatter = (column) => {
             return (row, cell, value, columnDef, dataContext) => {
@@ -424,6 +425,9 @@ let SlickGrid = class SlickGrid {
             // Since we need to return a string here, we are using calling a function instead of event emitter like other events handlers
             return this.onBeforeAppendCell ? this.onBeforeAppendCell(args.row, args.cell) : undefined;
         });
+        this._grid.onRendered.subscribe((e, args) => {
+            this.onRendered.emit(args);
+        });
     }
     updateSchema() {
         if (!this.columnDefinitions) {
@@ -550,6 +554,10 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], SlickGrid.prototype, "onCellChange", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], SlickGrid.prototype, "onRendered", void 0);
 __decorate([
     core_1.HostListener('focus'),
     __metadata("design:type", Function),
