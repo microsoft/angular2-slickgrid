@@ -4,6 +4,15 @@
  *--------------------------------------------------------------------------------------------*/
 import { ISelectionRange } from './interfaces';
 
+export interface ISlickSelectionModel {
+    range: Slick.Range[];
+    onSelectedRangesChanged: any;
+    init(grid: any): void;
+    destroy(): void;
+    setSelectedRanges(ranges: Slick.Range[]): void;
+    getSelectedRanges(): Slick.Range[];
+}
+
 export class SelectionModel implements ISlickSelectionModel {
 
     constructor(private _rowSelectionModel: ISlickSelectionModel,
@@ -173,15 +182,6 @@ export class SelectionModel implements ISlickSelectionModel {
         this._ranges = ranges;
         this.onSelectedRangesChanged.notify(this._ranges);
     }
-}
-
-export interface ISlickSelectionModel {
-    range: Slick.Range[];
-    onSelectedRangesChanged: any;
-    init(grid: any): void;
-    destroy(): void;
-    setSelectedRanges(ranges: Slick.Range[]): void;
-    getSelectedRanges(): Slick.Range[];
 }
 
 export interface ISlickEventHandler {

@@ -4,7 +4,8 @@ const del = require('del');
 const ts = require('gulp-typescript');
 const merge = require('merge2');
 const connect = require('gulp-connect');
-const tslint = require('gulp-tslint');
+const tslint = require('tslint');
+const gulpTslint = require('gulp-tslint');
 const sm = require('gulp-sourcemaps');
 
 const tsproj = ts.createProject('./tsconfig.json');
@@ -36,14 +37,14 @@ gulp.task('compile:examples', (done) => {
                 resolve();
             });
     }))
-    
+
     promises.push(new Promise((resolve) => {
         gulp.src(['examples/**/*.html'])
         .pipe(gulp.dest('dist'))
         .on('end', () => {
             resolve();
         });
-        
+
     }))
 
     promises.push(new Promise((resolve)=> {
@@ -70,19 +71,25 @@ gulp.task('compile:examples', (done) => {
 gulp.task('compile', gulp.series('compile:src', 'compile:examples'));
 
 gulp.task('lint:src', () => {
+    const program = tslint.Linter.createProgram('tsconfig.json');
     return gulp.src(['components/**/*.ts', '!components/typings/**/*'])
-            .pipe((tslint({
-                formatter: "verbose"
+            .pipe((gulpTslint({
+                program,
+                formatter: "verbose",
+                rulesDirectory: "node_modules/tslint-microsoft-contrib"
             })))
-            .pipe(tslint.report());
+            .pipe(gulpTslint.report());
 });
 
 gulp.task('lint:examples', () => {
+    const program = tslint.Linter.createProgram('tsconfig.json');
     return gulp.src(['examples/**/*.ts'])
-            .pipe((tslint({
-                formatter: "verbose"
+            .pipe((gulpTslint({
+                program,
+                formatter: "verbose",
+                rulesDirectory: "node_modules/tslint-microsoft-contrib"
             })))
-            .pipe(tslint.report());
+            .pipe(gulpTslint.report());
 });
 
 gulp.task('lint', gulp.series('lint:src', 'lint:examples'));
