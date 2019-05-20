@@ -34,26 +34,26 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
             const END = 35;
             const HOME = 36;
 
-            // These are the special keys the text editor should capture instead of letting 
+            // These are the special keys the text editor should capture instead of letting
             // the grid handle them
             this.keyCaptureList = [END, HOME];
         }
 
         destroy(): void {
             this._textEditor.destroy();
-        };
+        }
 
         focus(): void {
             this._textEditor.focus();
-        };
+        }
 
         getValue(): string {
             return this._textEditor.getValue();
-        };
+        }
 
         setValue(val): void {
             this._textEditor.setValue(val);
-        };
+        }
 
         loadValue(item, rowNumber): void {
             if (grid.overrideCellFn) {
@@ -63,11 +63,11 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
                 }
             }
             this._textEditor.loadValue(item);
-        };
+        }
 
         serializeValue(): string {
             return this._textEditor.serializeValue();
-        };
+        }
 
         applyValue(item, state): void {
             let activeRow = grid.activeCell.row;
@@ -80,11 +80,11 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
                 currentRow[colIndex] = state;
                 this._textEditor.applyValue(item, state);
             }
-        };
+        }
 
         isValueChanged(): boolean {
             return this._textEditor.isValueChanged();
-        };
+        }
 
         validate(): any {
             let activeRow = grid.activeCell.row;
@@ -92,13 +92,13 @@ export function getOverridableTextEditorClass(grid: SlickGrid): any {
             let colIndex: number = grid.getColumnIndex(this._args.column.name);
             let newValue: any = this._textEditor.getValue();
 
-            // TODO: It would be nice if we could support the isCellEditValid as a promise 
+            // TODO: It would be nice if we could support the isCellEditValid as a promise
             if (grid.isCellEditValid && !grid.isCellEditValid(activeRow, colIndex, newValue)) {
                 result.valid = false;
             }
 
             return result;
-        };
+        }
     }
 
     return OverridableTextEditor;
@@ -285,7 +285,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
         this.changeEditSession(false);
     }
 
-    // Called whenever the grid's selected rows change 
+    // Called whenever the grid's selected rows change
     // Event args: { rows: number[] }
     public get onSelectedRowsChanged(): Slick.Event<Slick.OnSelectedRowsChangedEventArgs<any>> {
         return this._grid.onSelectedRowsChanged;
@@ -381,7 +381,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             } else if (typeof this.selectionModel === 'string' && Slick[this.selectionModel] && typeof Slick[this.selectionModel] === 'function') {
                 this._grid.setSelectionModel(new Slick[this.selectionModel]());
             } else {
-                console.error(`Tried to register selection model ${this.selectionModel}, 
+                console.error(`Tried to register selection model ${this.selectionModel},
                                    but none was found to be attached to Slick Grid or it was not a function.
                                    Please extend the Slick namespace with the selection model as a function before registering`);
             }
@@ -432,7 +432,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             return getOverridableTextEditorClass(this);
         }
         return undefined;
-    };
+    }
 
     private getFormatter = (column: any): any => {
         return (row, cell, value, columnDef, dataContext) => {
@@ -482,7 +482,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             }
 
         };
-    };
+    }
 
     private setupEvents(): void {
         this._grid.onScroll.subscribe((e, args) => {
