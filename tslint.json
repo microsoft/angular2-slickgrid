@@ -1,147 +1,128 @@
 {
-  "rules": {
-    "align": [
-      true,
-      "parameters",
-      "statements"
-    ],
-    "ban": false,
-    "class-name": true,
-    "comment-format": [
-      true,
-      "check-space"
-    ],
-    "curly": true,
-    "eofline": true,
-    "forin": true,
-    "indent": [
-      true,
-      "spaces"
-    ],
-    "interface-name": true,
-    "jsdoc-format": true,
-    "label-position": true,
-    "max-line-length": [
-      true,
-      160
-    ],
-    "member-access": false,
-    "member-ordering": [
-      false,
-      "static-before-instance",
-      "variables-before-functions"
-    ],
-    "no-any": false,
-    "no-arg": true,
-    "no-bitwise": true,
-    "no-conditional-assignment": true,
-    "no-consecutive-blank-lines": false,
-    "no-console": [
-      true,
-      "debug",
-      "info",
-      "time",
-      "timeEnd",
-      "trace"
-    ],
-    "no-construct": true,
-    "no-constructor-vars": false,
-    "no-debugger": true,
-    "no-duplicate-variable": true,
-    "no-empty": true,
-    "no-eval": true,
-    "no-inferrable-types": false,
-    "no-internal-module": true,
-    "no-null-keyword": true,
-    "no-require-imports": false,
-    "no-shadowed-variable": true,
-    "no-string-literal": false,
-    "no-switch-case-fall-through": false,
-    "no-trailing-whitespace": true,
-    "no-unused-expression": false,
-    "no-unused-variable": true,
-    "no-use-before-declare": true,
-    "no-var-keyword": true,
-    "no-var-requires": false,
-    "object-literal-sort-keys": false,
-    "one-line": [
-      true,
-      "check-open-brace",
-      "check-catch",
-      "check-else",
-      "check-finally",
-      "check-whitespace"
-    ],
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
-    ],
-    "radix": true,
-    "semicolon": true,
-    "switch-default": true,
-    "trailing-comma": [
-      true,
-      {
-        "multiline": "never",
-        "singleline": "never"
-      }
-    ],
-    "triple-equals": [
-      true,
-      "allow-null-check"
-    ],
-    "typedef": [
-      true,
-      "call-signature",
-      "property-declaration"
-    ],
-    "typedef-whitespace": [
-      true,
-      {
-        "call-signature": "nospace",
-        "index-signature": "nospace",
-        "parameter": "nospace",
-        "property-declaration": "nospace",
-        "variable-declaration": "nospace"
-      }
-    ],
-    "use-strict": false,
-    "variable-name": [
-      true,
-      "allow-leading-underscore",
-      "ban-keywords"
-    ],
-    "whitespace": [
-      true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator",
-      "check-type"
-    ],
-
-    // MSSDL Required Rules
-    "no-banned-terms": true,
-    "no-delete-expression": true,
-    "no-disable-auto-sanitization": true,
-    "no-document-domain": true,
-    "no-duplicate-parameter-names": true,
-    "no-eval": true,
-    "no-exec-script": true,
-    "no-function-constructor-with-string-args": true,
-    "no-octal-literal": true,
-    // The actual SDL list includes no-reserved-keywords currently but this has been deprecated
-    // in tslint-microsoft-contrib in favor of using the ban-keywords option below. So to avoid
-    // making many unnecessary changes we just use ban-keywords here instead
-    "no-reserved-keywords": false,
-    "variable-name": {
-        "options": [
-            "ban-keywords"
-        ]
-    },
-    "no-string-based-set-immediate": true,
-    "no-string-based-set-interval": true,
-    "no-string-based-set-timeout": true
-  }
+    "rules": {
+        "align": [
+            true,
+            "parameters",
+            "statements"
+        ],
+        "ban": false,
+        "class-name": true,
+        "comment-format": [
+            true,
+            "check-space"
+        ],
+        "curly": true,
+        "eofline": true,
+        "forin": true,
+        "jsdoc-format": true,
+        "label-position": true,
+        "max-line-length": [
+            true,
+            160
+        ],
+        "member-access": false,
+        "member-ordering": [
+            false,
+            "static-before-instance",
+            "variables-before-functions"
+        ],
+        "no-any": false,
+        "no-arg": true,
+        "no-bitwise": true,
+        "no-conditional-assignment": true,
+        "no-consecutive-blank-lines": false,
+        "no-console": [
+            true,
+            "debug",
+            "info",
+            "time",
+            "timeEnd",
+            "trace"
+        ],
+        "no-construct": true,
+        "no-constructor-vars": false,
+        "no-debugger": true,
+        "no-duplicate-variable": true,
+        "no-empty": true,
+        "no-inferrable-types": false,
+        "no-internal-module": true,
+        "no-require-imports": false,
+        "no-shadowed-variable": true,
+        "no-string-literal": false,
+        "no-switch-case-fall-through": false,
+        "no-trailing-whitespace": true,
+        "no-unused-expression": false,
+        "no-use-before-declare": true,
+        "no-var-keyword": true,
+        "no-var-requires": false,
+        "object-literal-sort-keys": false,
+        "one-line": [
+            true,
+            "check-open-brace",
+            "check-catch",
+            "check-else",
+            "check-finally",
+            "check-whitespace"
+        ],
+        "radix": true,
+        "semicolon": true,
+        "switch-default": true,
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "never",
+                "singleline": "never"
+            }
+        ],
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
+        "typedef": [
+            true,
+            "call-signature",
+            "property-declaration"
+        ],
+        "typedef-whitespace": [
+            true,
+            {
+                "call-signature": "nospace",
+                "index-signature": "nospace",
+                "parameter": "nospace",
+                "property-declaration": "nospace",
+                "variable-declaration": "nospace"
+            }
+        ],
+        "use-strict": false,
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-separator",
+            "check-type"
+        ],
+        // MSSDL Required Rules
+        "no-banned-terms": true,
+        "no-delete-expression": true,
+        "no-disable-auto-sanitization": true,
+        "no-document-domain": true,
+        "no-duplicate-parameter-names": true,
+        "no-eval": true,
+        "no-exec-script": true,
+        "no-octal-literal": true,
+        // The actual SDL list includes no-reserved-keywords currently but this has been deprecated
+        // in tslint-microsoft-contrib in favor of using the ban-keywords option below. So to avoid
+        // making many unnecessary changes we just use ban-keywords here instead
+        "no-reserved-keywords": false,
+        "variable-name": {
+            "options": [
+                "allow-leading-underscore",
+                "ban-keywords"
+            ]
+        },
+        "no-string-based-set-immediate": true,
+        "no-string-based-set-interval": true,
+        "no-string-based-set-timeout": true
+    }
 }
