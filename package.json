@@ -1,6 +1,6 @@
 {
   "name": "angular2-slickgrid",
-  "version": "1.2.1",
+  "version": "1.2.2-patch1",
   "description": "",
   "main": "angular_slickgrid.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "@angular/router": "~3.1.2",
     "@angular/upgrade": "~2.1.2",
     "angular-in-memory-web-api": "~0.1.13",
-    "slickgrid": "github:anthonydresser/SlickGrid",
+    "slickgrid": "github:anthonydresser/SlickGrid#2.3.23-2",
     "core-js": "^2.4.1",
     "moment": "^2.15.1",
     "reflect-metadata": "^0.1.8",
@@ -41,7 +41,7 @@
     "@angular/router": "~3.1.2",
     "@angular/upgrade": "~2.1.2",
     "angular-in-memory-web-api": "~0.1.13",
-    "slickgrid": "github:anthonydresser/SlickGrid",
+    "slickgrid": "github:anthonydresser/SlickGrid#2.3.23-2",
     "core-js": "^2.4.1",
     "del": "^2.2.1",
     "gulp": "github:gulpjs/gulp#4.0",
