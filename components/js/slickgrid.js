@@ -207,6 +207,15 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             this._grid.focus();
         }
     }
+    set rowHeight(val) {
+        this._rowHeight = val;
+        if (this._grid) {
+            this._grid.setOptions({ rowHeight: this.rowHeight });
+        }
+    }
+    get rowHeight() {
+        return this._rowHeight;
+    }
     /* andresse: commented out 11/1/2016 due to minification issues
     private _finishGridEditingFn: (e: any, args: any) => void;
     */
@@ -371,7 +380,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
             showRowNumber: true,
             showDataTypeIcon: this.showDataTypeIcon,
             showHeader: this.showHeader,
-            rowHeight: this._rowHeight,
+            rowHeight: this.rowHeight,
             defaultColumnWidth: 120,
             editable: true,
             enableAsyncPostRender: this.enableAsyncPostRender,
@@ -411,7 +420,7 @@ let SlickGrid = SlickGrid_1 = class SlickGrid {
     subscribeToScroll() {
         this._grid.onScroll.subscribe((e, args) => {
             let scrollTop = args.scrollTop;
-            let scrollRow = Math.floor(scrollTop / this._rowHeight);
+            let scrollRow = Math.floor(scrollTop / this.rowHeight);
             scrollRow = scrollRow < 0 ? 0 : scrollRow;
             if (scrollRow !== this._topRow) {
                 this._topRow = scrollRow;
@@ -605,6 +614,11 @@ __decorate([
     __metadata('design:paramtypes', []), 
     __metadata('design:returntype', void 0)
 ], SlickGrid.prototype, "onFocus", null);
+__decorate([
+    core_1.Input(), 
+    __metadata('design:type', Number), 
+    __metadata('design:paramtypes', [Number])
+], SlickGrid.prototype, "rowHeight", null);
 SlickGrid = SlickGrid_1 = __decorate([
     core_1.Component({
         selector: 'slick-grid',

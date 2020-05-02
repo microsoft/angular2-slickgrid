@@ -37,10 +37,11 @@ export declare class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterVie
     topRowNumber: number;
     topRowNumberChange: EventEmitter<number>;
     onFocus(): void;
+    rowHeight: number;
+    private _rowHeight;
     private _grid;
     private _gridColumns;
     private _gridData;
-    private _rowHeight;
     private _resizeSubscription;
     private _gridSyncSubscription;
     private _topRow;

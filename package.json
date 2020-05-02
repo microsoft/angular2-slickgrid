@@ -44,7 +44,7 @@
     "slickgrid": "github:anthonydresser/SlickGrid#2.3.23-2",
     "core-js": "^2.4.1",
     "del": "^2.2.1",
-    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp": "github:gulpjs/gulp#v4.0.0",
     "gulp-connect": "^5.0.0",
     "gulp-tslint": "^6.0.2",
     "gulp-typescript": "^2.13.6",
