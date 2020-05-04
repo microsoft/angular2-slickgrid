@@ -154,7 +154,7 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
     }
 
     private _rowHeight = 29;
-    private _grid: any;
+    private _grid: Slick.Grid<any>;
     private _gridColumns: ISlickGridColumn[];
     private _gridData: ISlickGridData;
     private _resizeSubscription: Subscription;
