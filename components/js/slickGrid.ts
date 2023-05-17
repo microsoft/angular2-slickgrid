@@ -366,7 +366,9 @@ export class SlickGrid implements OnChanges, OnInit, OnDestroy, AfterViewInit {
             },
             formatterFactory: {
                 getFormatter: this.getFormatter
-            }
+            },
+            disableColumnBasedCellVirtualization: true,
+            enableInGridTabNavigation: false
         };
 
         this._grid = new Slick.Grid(
