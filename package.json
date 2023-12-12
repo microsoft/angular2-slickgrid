@@ -55,7 +55,6 @@
     "moment": "^2.15.1",
     "reflect-metadata": "^0.1.8",
     "rxjs": "^5.4.0",
-    "chokidar": "3.5.2",
     "slickgrid": "github:Microsoft/SlickGrid.ADS#2.3.43",
     "systemjs": "0.19.40",
     "tsc": "^1.20150623.0",
