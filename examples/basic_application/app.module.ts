@@ -5,7 +5,7 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { SlickGrid } from './../../components/js/SlickGrid';
+import { SlickGrid } from './../../out/js/slickGrid';
 
 import { AppComponent }  from './app.component';
 
